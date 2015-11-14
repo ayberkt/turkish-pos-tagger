@@ -1,5 +1,10 @@
 module Main where
 
+import Data.HMM
+import Control.Monad
+import Data.Array
+import System.IO
+
 data POS = Noun
          | Adj
          | Adv
@@ -13,6 +18,6 @@ data POS = Noun
          | Num
          | Dup
          | Punc
-         deriving (Eq, Show,)
+         deriving (Eq, Show)
 
 main = putStrLn "Hi"
