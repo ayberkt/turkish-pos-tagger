@@ -2,8 +2,8 @@ module Main where
 
 import Data.HMM
 import Control.Monad
-import Data.Array
 import System.IO
+import qualified Data.Vector.Storable as VS
 
 data POS = Noun
          | Adj
