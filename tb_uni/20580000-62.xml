@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="windows-1254" ?>
 <Set sentences="2">
 <S No="1">
 <W IX="1" LEM="" MORPH=" " IG='[(1,"Başbakan_Yardımcısı_Mehmet_Ali_Şahin+Noun+Prop+A3sg+Pnon+Nom")]' REL="[10,1,(SUBJECT)]" ORG_IG1='[(1,"başbakan+Noun+A3sg+Pnon+Nom")]' ORG_IG2='[(1,"yardımcı+Noun+A3sg+P3sg+Nom")]' ORG_IG3='[(1,"Mehmet+Noun+Prop+A3sg+Pnon+Nom")]' ORG_IG4='[(1,"Ali+Noun+Prop+A3sg+Pnon+Nom")]' ORG_IG5='[(1,"Şahin+Noun+Prop+A3sg+Pnon+Nom")]'> Başbakan_Yardımcısı_Mehmet_Ali_Şahin </W>

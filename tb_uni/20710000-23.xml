@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="windows-1254" ?>
 <Set sentences="4">
 <S No="1">
 <W IX="1" LEM="" MORPH=" " IG='[(1,"Yaralılardan_Burak_Altındağ'ın_abisi_Vecdi_Altındağ+Noun+Prop+A3sg+Pnon+Nom")]' REL="[12,2,(SUBJECT)]" ORG_IG1='[(1,"yara+Noun+A3sg+Pnon+Nom")(2,"Adj+With")(3,"Noun+Zero+A3pl+Pnon+Abl")]' ORG_IG2='[(1,"Burak+Noun+Prop+A3sg+Pnon+Nom")]' ORG_IG3='[(1,"Altındağ+Noun+Prop+A3sg+Pnon+Gen")]' ORG_IG4='[(1,"abi+Noun+A3sg+P3sg+Nom")]' ORG_IG5='[(1,"Vecdi+Noun+Prop+A3sg+Pnon+Nom")]' ORG_IG6='[(1,"Altındağ+Noun+Prop+A3sg+Pnon+Nom")]'> Yaralılardan_Burak_Altındağ'ın_abisi_Vecdi_Altındağ </W>

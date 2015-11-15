@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="windows-1254" ?>
 <Set sentences="4">
 <S No="1">
 <W IX="1" LEM="" MORPH=" " IG='[(1,"Bayındır_Sokak+Noun+Prop+A3sg+Pnon+Loc")(2,"Adj+Rel")]' REL="[3,1,(MODIFIER)]" ORG_IG1='[(1,"Bayındır+Noun+Prop+A3sg+Pnon+Nom")]' ORG_IG2='[(1,"Sokak+Noun+Prop+A3sg+Pnon+Loc")(2,"Adj+Rel")]'> Bayındır_Sokak'taki </W>
