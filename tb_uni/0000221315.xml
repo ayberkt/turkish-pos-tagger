@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="windows-1254" ?>
+<Set sentences="3">
+<S No="1">
+<W IX="1" LEM="" MORPH=" " IG='[(1,"çok+Adv")]' REL="[2,1,(MODIFIER)]"> Çok </W>
+<W IX="2" LEM="" MORPH=" " IG='[(1,"yakışıklı+Adj")(2,"Verb+Zero+Past+A3sg")]' REL="[3,1,(SENTENCE)]"> yakışıklıydı </W>
+<W IX="3" LEM="" MORPH=" " IG='[(1,",+Punc")]' REL="[5,1,(COORDINATION)]"> , </W>
+<W IX="4" LEM="" MORPH=" " IG='[(1,"hemen+Adv")]' REL="[5,1,(MODIFIER)]"> hemen </W>
+<W IX="5" LEM="" MORPH=" " IG='[(1,"fark_et+Verb+Pos+Narr+Past+A1sg")]' REL="[6,1,(SENTENCE)]" ORG_IG1='[(1,"fark+Noun+A3sg+Pnon+Nom")]' ORG_IG2='[(1,"et+Verb+Pos+Narr+Past+A1sg")]'> fark_etmiştim </W>
+<W IX="6" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
+</S>
+<S No="2">
+<W IX="1" LEM="" MORPH=" " IG='[(1,"heyecan+Noun+A3sg+Pnon+Nom")(2,"Adj+With")(3,"Verb+Zero+Past+A3sg")]' REL="[2,1,(SENTENCE)]"> Heyecanlıydı </W>
+<W IX="2" LEM="" MORPH=" " IG='[(1,",+Punc")]' REL="[6,2,(COORDINATION)]"> , </W>
+<W IX="3" LEM="" MORPH=" " IG='[(1,"çare+Noun+A3sg+Pnon+Nom")(2,"Adj+Without")]' REL="[5,1,(MODIFIER)]"> çaresiz </W>
+<W IX="4" LEM="" MORPH=" " IG='[(1,"bir+Det")]' REL="[5,1,(DETERMINER)]"> bir </W>
+<W IX="5" LEM="" MORPH=" " IG='[(1,"hal+Noun+A3sg+P3sg+Nom")]' REL="[6,1,(SUBJECT)]"> hali </W>
+<W IX="6" LEM="" MORPH=" " IG='[(1,"var+Adj")(2,"Verb+Zero+Past+A3sg")]' REL="[7,1,(SENTENCE)]"> vardı </W>
+<W IX="7" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
+</S>
+<S No="3">
+<W IX="1" LEM="" MORPH=" " IG='[(1,"yeşil+Adj")(2,"Noun+Zero+A3sg+Pnon+Abl")]' REL="[3,1,(ABLATIVE.ADJUNCT)]"> Yeşilden </W>
+<W IX="2" LEM="" MORPH=" " IG='[(1,"mavi+Adj")(2,"Noun+Zero+A3sg+Pnon+Dat")]' REL="[3,1,(OBJECT)]"> maviye </W>
+<W IX="3" LEM="" MORPH=" " IG='[(1,"dönüş+Verb+Pos")(2,"Adj+PresPart")]' REL="[5,1,(MODIFIER)]"> dönüşen </W>
+<W IX="4" LEM="" MORPH=" " IG='[(1,"iri+Adj")]' REL="[5,1,(MODIFIER)]"> iri </W>
+<W IX="5" LEM="" MORPH=" " IG='[(1,"göz+Noun+A3pl+P3sg+Acc")]' REL="[7,1,(OBJECT)]"> gözlerini </W>
+<W IX="6" LEM="" MORPH=" " IG='[(1,"biz+Pron+PersP+A1pl+Pnon+Dat")]' REL="[7,1,(DATIVE.ADJUNCT)]"> bize </W>
+<W IX="7" LEM="" MORPH=" " IG='[(1,"çevir+Verb+Pos+Narr+Past+A3sg")]' REL="[8,1,(SENTENCE)]"> çevirmişti </W>
+<W IX="8" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
+</S>
+</Set>
