@@ -1,9 +1,13 @@
+{-# LANGUAGE Arrows #-}
+
 module Main where
 
 import Data.HMM
 import Control.Monad
 import System.IO
+import System.Directory
 import qualified Data.Vector.Storable as VS
+import qualified Text.XML.HXT.Core as HXT
 
 data POS = Noun
          | Adj
@@ -20,4 +24,7 @@ data POS = Noun
          | Punc
          deriving (Eq, Show)
 
-main = putStrLn "Hi"
+main :: IO ()
+main = do
+  files <- getDirectoryContents "tb_corrected"
+  print $ files !! 2
