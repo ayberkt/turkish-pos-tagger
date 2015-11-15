@@ -16,7 +16,9 @@ build-type:          Simple
 -- extra-source-files:
 cabal-version:       >=1.10
 
+
 executable parse
+  ghc-options:         -Wall
   exposed-modules:     Main
                      , Data.HMM
   build-depends:       base >=4.8 && <4.9
@@ -30,6 +32,7 @@ executable parse
                      , hxt
                      , vector
                      , directory
+                     , utf8-string
   hs-source-dirs:      src
                      , hmm-master
   main-is: Main.hs
