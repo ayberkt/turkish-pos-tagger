@@ -1,29 +1,35 @@
 \documentclass{article}
 \usepackage{natbib}
+\usepackage{hyperref}
 
-\title{\bf Final Project Proposal}
+\title{\bf An HMM-based part-of-speech tagger for Turkish}
 \author{Your Name}
 \date{Due date: 16 November 2015 at 11:59 PM Central time}
 
 \begin{document}
 \maketitle
 
-
-% Lines that begin with % are comments.
-
-
 \section{Motivation}
 \label{sec:motivation}
-
-Write an introductory section that motivates a particular problem you wish to solve.
-
-This section should (at a minimum) fill the remainder of this page.
-
-
+My main motivation for undertaking this project is to understand the main
+principles underlying POS-tagging; due to time and resource constraints, it is
+not possible to build a competitive POS-tagger for Turkish without doing
+morphological analysis hence this project. Nevertheless, I expect my POS-tagger
+to work with a decent accuracy that is good enough to be a starting point for
+further development. Moreover, \citet{Korkut2015} began the development of a
+Turkish NLP framework implemented in the programming language Haskell. I intend to incorporate the
+POS-tagger to the Guguk project, hence contributing towards the existence of a
+Turkish NLP-framework in Haskell.
 
 \section{Related Work}
 
-Briefly survey the most salient prior work that relates to the problem you wish to solve. This section should cite relevant sources. This section should be at least one to two paragraphs in length.
+% Briefly survey the most salient prior work that relates to the problem you wish
+% to solve. This section should cite relevant sources. This section should be at
+% least one to two paragraphs in length.
+The most important advancement in the computational linguistics of Turkish is
+the NLP framework ``Zemberek'' by \citet{akin2007zemberek}. Although it started
+out as an NLP tool for the Turkish language, Zemberek moved on to become a
+framework for dealing with all Turkic languages
 
 As we saw is Section \ref{sec:motivation}, ...
 %
