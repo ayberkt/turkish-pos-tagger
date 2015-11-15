@@ -5,7 +5,10 @@ hmm-master
 *.blg
 *.log
 *.pdf
+*.out
+*.dvi
 *.synctex.gz
+proposal/auto
 
 # trivial gitignore file
 .cabal-sandbox/
