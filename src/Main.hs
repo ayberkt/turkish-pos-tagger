@@ -9,6 +9,8 @@ import System.Directory
 import Text.XML.HXT.Core
 import Prelude hiding (words, putStr)
 
+type TaggedWord = (String, POS)
+
 data POS = Noun
          | Adj
          | Adv
@@ -29,25 +31,27 @@ parseFile f = readDocument [ withValidate no
                            , withRemoveWS yes
                            ] f
 
-getPOS :: String -> POS
-getPOS x = read (takeWhile (\n -> n /= '+' && n /= '"') $ tail $ dropWhile (/= '+') x)
+extractPOS :: String -> POS
+extractPOS x = read (takeWhile (\n -> n /= '+' && n /= '"') $ tail $ dropWhile (/= '+') x)
 
+atTag :: ArrowXml a => String -> a XmlTree XmlTree
 atTag tag = deep (isElem >>> hasName tag)
 
+words :: ArrowXml cat => cat XmlTree (String, String)
 words = atTag "S" >>>
   proc x -> do
-    w    <- (atTag "W") -< x
-    word <- getText <<< getChildren -< w
-    tag  <- getAttrValue "IG" -< w
-    returnA -< (word, tag)
+    w       <- (atTag "W") -< x
+    word    <- getText <<< getChildren -< w
+    tagStr  <- getAttrValue "IG" -< w
+    returnA -< (word, tagStr)
 
 printTuple :: (String, String) -> IO ()
-printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ getPOS b))
+printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ extractPOS b))
 
 main :: IO ()
 main = do
   files <- getDirectoryContents "tb_uni"
-  let file = "tb_uni/" ++ files !! 2
+  let file = "tb_uni/" ++ files !! 3
   ws <- runX (readDocument [withValidate no] file >>> words)
   _  <- mapM printTuple ws
   return ()
