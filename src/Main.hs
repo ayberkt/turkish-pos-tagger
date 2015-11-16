@@ -44,7 +44,7 @@ atTag tag = deep (isElem >>> hasName tag)
 words :: ArrowXml cat => cat XmlTree (String, String)
 words = atTag "S" >>>
   proc x -> do
-    w       <- (atTag "W") -< x
+    w       <- atTag "W" -< x
     word    <- getText <<< getChildren -< w
     tagStr  <- getAttrValue "IG" -< w
     returnA -< (word, tagStr)
