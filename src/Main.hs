@@ -22,22 +22,32 @@ data POS = Noun
          | Num
          | Dup
          | Punc
-         deriving (Eq, Show)
+         deriving (Eq, Show, Read)
 
 parseFile :: FilePath -> IOStateArrow a b XmlTree
 parseFile f = readDocument [ withValidate no
                            , withRemoveWS yes
                            ] f
 
-words = deep (isElem >>> hasName "S") >>>
-  proc x -> do
-    word <- getText <<< getChildren <<< deep (hasName "W") -< x
-    returnA -< word
+getPOS :: String -> POS
+getPOS x = read (takeWhile (\n -> n /= '+' && n /= '"') $ tail $ dropWhile (/= '+') x)
 
+atTag tag = deep (isElem >>> hasName tag)
+
+words = atTag "S" >>>
+  proc x -> do
+    w    <- (atTag "W") -< x
+    word <- getText <<< getChildren -< w
+    tag  <- getAttrValue "IG" -< w
+    returnA -< (word, tag)
+
+printTuple :: (String, String) -> IO ()
+printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ getPOS b))
 
 main :: IO ()
 main = do
   files <- getDirectoryContents "tb_uni"
   let file = "tb_uni/" ++ files !! 2
   ws <- runX (readDocument [withValidate no] file >>> words)
-  putStrLn $ unwords ws
+  _  <- mapM printTuple ws
+  return ()
