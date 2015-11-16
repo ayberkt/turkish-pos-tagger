@@ -32,7 +32,9 @@ parseFile f = readDocument [ withValidate no
                            ] f
 
 extractPOS :: String -> POS
-extractPOS x = read (takeWhile (\n -> n /= '+' && n /= '"') $ tail $ dropWhile (/= '+') x)
+extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
+  where notPlus = (/= '+')
+        notPlusNorQuote = \n -> notPlus n && n /= '"'
 
 atTag :: ArrowXml a => String -> a XmlTree XmlTree
 atTag tag = deep (isElem >>> hasName tag)
