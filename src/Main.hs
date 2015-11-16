@@ -11,6 +11,8 @@ import Prelude hiding (words, putStr)
 
 type TaggedWord = (String, POS)
 
+-- | These are the possible parts-of-speech described in the
+-- | METU-Sabanci treebank paper.
 data POS = Noun
          | Adj
          | Adv
@@ -26,11 +28,6 @@ data POS = Noun
          | Punc
          deriving (Eq, Show, Read)
 
-parseFile :: FilePath -> IOStateArrow a b XmlTree
-parseFile f = readDocument [ withValidate no
-                           , withRemoveWS yes
-                           ] f
-
 extractPOS :: String -> POS
 extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
   where notPlus = (/= '+')
@@ -39,6 +36,11 @@ extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
 atTag :: ArrowXml a => String -> a XmlTree XmlTree
 atTag tag = deep (isElem >>> hasName tag)
 
+-- | For all children of <S> (i.e., the words) return a tuple containing
+-- | the word and the string containing part-of-speech and morpheme
+-- | glossing of the word. We are primarily interested in the part-of-speech
+-- | contained by this `tagStr` so we will eventually extract it out using
+-- | `extractPOS`.
 words :: ArrowXml cat => cat XmlTree (String, String)
 words = atTag "S" >>>
   proc x -> do
