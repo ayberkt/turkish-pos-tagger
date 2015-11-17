@@ -2,7 +2,7 @@
 
 module Main where
 
--- import Data.HMM
+import Data.HMM
 import System.IO hiding (putStr)
 import System.Directory
 -- import qualified Data.Vector.Storable as VS
@@ -52,10 +52,22 @@ words = atTag "S" >>>
 printTuple :: (String, String) -> IO ()
 printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ extractPOS b))
 
+-- | Given number of files `numFiles` takes out all word-tag pairs
+-- | from each file indexed from 0 .. `numFiles`, and concatenates
+-- | them.
+-- getWords :: ArrowXml cat => FilePath -> cat XmlTree (String, String)
+getWords f = readDocument [withValidate no] f >>> words
+
 main :: IO ()
 main = do
   files <- getDirectoryContents "tb_uni"
-  let file = "tb_uni/" ++ files !! 3
-  ws <- runX (readDocument [withValidate no] file >>> words)
-  _  <- mapM printTuple ws
+  let file = "tb_uni/" ++ files !! 4
+      fileNames = drop 2 . take 40 $ map ("tb_uni/" ++) files
+  -- pairs <- runX $ readDocument [withValidate no] file >>> words
+  pairList <- mapM runX $ map getWords fileNames
+  print pairList
+  -- let words = map fst pairs
+      -- tags  = map (extractPOS . snd) pairs
+      -- myHMM = simpleHMM words tags
+  -- print myHMM
   return ()
