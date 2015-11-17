@@ -14,13 +14,13 @@
 \section{Motivation}
 \label{sec:motivation}
 My main motivation for undertaking this project is to understand the main
-principles underlying POS-tagging; due to time and resource constraints, it is
+principles underlying POS-tagging. Due to time and resource constraints, it is
 not possible for me to build a state-of-the-art POS-tagger for
 Turkish. Nevertheless, I expect my POS-tagger
-to work with a decent accuracy that is enough to be a starting point for
+to work with a decent accuracy that is adequate to be a starting point for
 further development. Moreover, \citet{Korkut2015} began the development of a
-Turkish NLP framework named ``Guguk'' implemented in the programming language Haskell. I intend
-to incorporate this project to the Guguk project, hence contributing towards
+Turkish NLP framework named ``Guguk,'' implemented in the programming language Haskell. I intend
+to merge this project to Guguk, hence contributing towards
 the existence of a Turkish NLP-framework in Haskell.
 
 \section{Related Work}
@@ -31,9 +31,9 @@ the existence of a Turkish NLP-framework in Haskell.
 % least one to two paragraphs in length.
 The most important advancement in the computational linguistics of Turkish is
 the NLP framework ``Zemberek'' by \citet{akin2007zemberek} that has been
-immensely useful for both research and applications of Turkish NLP. Although it started
+immensely useful for both theory and applications of Turkish NLP. Although it started
 out as an NLP tool for the Turkish language, Zemberek moved on to become a
-a tool for processing all Turkic languages. Zemberek
+a tool for processing all Turkic languages.
 
 The widely cited \citet{oflazer1994tagging} outlines the implementation of a
 tool for both morpheme glossing and POS tagging, that has ``98-99 \%'' accuracy. This
@@ -45,12 +45,12 @@ pertain primarily to Turkish morphology---compared to the complexity of Turkish
 morphology, its syntax seems to be a less interesting problem.
 \section{Proposal}
 
-I will be implementing a part-of-speech tagger for the Turkish language. As
-mentioned in section~\ref{sec:related_work} I will be mostly focusing on parts-of-speech
+I will implement a part-of-speech tagger for the Turkish language. As
+mentioned in section~\ref{sec:related_work}, I will mostly focus on parts-of-speech
 of words\footnote{I base my defition of a ``word'' on the orthographic space in
   most of the cases. Some of the exceptions to this are Turkish reduplication
   that have the POS ``Dup''} and will not be accounting for morphology. There are problems with this
-approach but this project aims to be a starting point for further research.
+approach, fixing which would go beyond the scope of this class.
 
 For programming the POS tagger I will be using Haskell, a statically-typed and purely
 functional programming language. I will be using the
