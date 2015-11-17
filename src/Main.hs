@@ -28,6 +28,9 @@ data POS = Noun
          | Punc
          deriving (Eq, Show, Read)
 
+allTags :: [POS]
+allTags = [Noun,Adj,Adv,Verb,Pron,Conj,Det,Postp,Ques,Interj,Num,Dup,Punc]
+
 extractPOS :: String -> POS
 extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
   where notPlus = (/= '+')
@@ -62,12 +65,13 @@ main :: IO ()
 main = do
   files <- getDirectoryContents "tb_uni"
   let file = "tb_uni/" ++ files !! 4
-      fileNames = drop 2 . take 40 $ map ("tb_uni/" ++) files
+      fileNames = drop 2 . take 100 $ map ("tb_uni/" ++) files
   -- pairs <- runX $ readDocument [withValidate no] file >>> words
   pairList <- mapM runX $ map getWords fileNames
-  print pairList
-  -- let words = map fst pairs
-      -- tags  = map (extractPOS . snd) pairs
-      -- myHMM = simpleHMM words tags
-  -- print myHMM
+  let pairs      = foldr (++) [] pairList
+      words      = map fst pairs
+      tags       = map (extractPOS . snd) pairs
+      myHMM      = simpleHMM allTags []
+      -- trainedHmm = baumWelch myHMM words 10
+  _ <- print trainedHmm
   return ()
