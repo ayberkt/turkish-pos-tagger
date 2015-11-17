@@ -2,6 +2,8 @@
 \usepackage{natbib}
 \usepackage{hyperref}
 
+\newcommand{\hmmURL}{https://hackage.haskell.org/package/hmm-0.2.1.1/docs/Data-HMM.html}
+
 \title{\bf An HMM-based part-of-speech tagger for Turkish}
 \author{Ayberk Tosun\\\texttt{tosun2@illinois.edu}}
 \date{}
@@ -28,25 +30,35 @@ the existence of a Turkish NLP-framework in Haskell.
 % to solve. This section should cite relevant sources. This section should be at
 % least one to two paragraphs in length.
 The most important advancement in the computational linguistics of Turkish is
-the NLP framework ``Zemberek'' by \citet{akin2007zemberek}. Although it started
+the NLP framework ``Zemberek'' by \citet{akin2007zemberek} that has been
+immensely useful for both research and applications of Turkish NLP. Although it started
 out as an NLP tool for the Turkish language, Zemberek moved on to become a
-a tool for processing all Turkic languages. Zemberek has been immensely useful
-for linguistic research on Turkish.
+a tool for processing all Turkic languages. Zemberek
 
 The widely cited \citet{oflazer1994tagging} outlines the implementation of a
 tool for both morpheme glossing and POS tagging, that has ``98-99 \%'' accuracy. This
 tool is based on a morphological specification of Turkish and makes use of a
 morphological processor called ``PC-Kimmo'' \citep{antworth1991pc}.
 
-Most of the work relating to the computational processing of Turkish deal with
-Turkish morphology since Turkish is a morphologically rich language analyzing
-the morphology seems to be the more salient problem e
+Most of the literature relating to the computational processing of Turkish
+pertain primarily to Turkish morphology---compared to the complexity of Turkish
+morphology, its syntax seems to be a less interesting problem.
 \section{Proposal}
 
 I will be implementing a part-of-speech tagger for the Turkish language. As
-mention in section~\ref{sec:related_work} I will be mostly focusing on parts-of-speech
-of words and will not be accounting for morphology. There are problems with this
+mentioned in section~\ref{sec:related_work} I will be mostly focusing on parts-of-speech
+of words\footnote{I base my defition of a ``word'' on the orthographic space in
+  most of the cases. Some of the exceptions to this are Turkish reduplication
+  that have the POS ``Dup''} and will not be accounting for morphology. There are problems with this
 approach but this project aims to be a starting point for further research.
+
+For programming the POS tagger I will be using Haskell, a statically-typed and purely
+functional programming language. I will be using the
+\href{\hmmURL}{\texttt{Data.HMM}} package for
+Haskell. The data, that is probably the most important component of this
+project, comes from the METU-Sabanc\i treebank built by
+\citet{oflazer2003building}. I will be stripping the POS tag for each word from
+the corpus and will use them to train HMM's.
 
 \bibliographystyle{apalike}
 \bibliography{your_bibliography}
