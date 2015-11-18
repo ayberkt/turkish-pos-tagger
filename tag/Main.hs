@@ -1,3 +1,5 @@
+{-# LANGUAGE BangPatterns #-}
+
 module Main where
 import Data.HMM (loadHMM, viterbi, HMM(..))
 import System.IO
@@ -8,7 +10,8 @@ main = do
   -- trainedHMM <- (loadHMM "model.hmm") :: IO (HMM Int String)
   putStr "> "
   hFlush stdout
-  input      <- getLine
-  let ws      = words input
-      wsArray = array (0, )
+  input <- getLine
+  let ws       = words input
+      !wsArray = listArray (0, (length ws)-1) ws
+  print wsArray
   return ()
