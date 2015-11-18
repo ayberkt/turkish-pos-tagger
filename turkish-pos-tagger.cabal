@@ -17,10 +17,8 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 
-executable parse
+executable create-model
   ghc-options:         -Wall
-  exposed-modules:     Main
-                     , Data.HMM
   build-depends:       base >=4.8 && <4.9
                      , array
                      , list-extras >= 0.4
@@ -33,7 +31,25 @@ executable parse
                      , vector
                      , directory
                      , utf8-string
-  hs-source-dirs:      src
+  hs-source-dirs:      create
                      , hmm-master
-  main-is: Main.hs
+  main-is:             Main.hs
+  default-language:    Haskell2010
+
+executable tag
+  ghc-options:         -Wall
+  build-depends:       base >= 4.8 && < 4.9
+                     , array
+                     , list-extras >= 0.4
+                     , logfloat
+                     , data-memocombinators >= 0.5
+                     , binary
+                     , bytestring
+                     , containers
+                     , hxt
+                     , vector
+                     , directory
+  hs-source-dirs:      tag
+                     , hmm-master
+  main-is:             Main.hs
   default-language:    Haskell2010
