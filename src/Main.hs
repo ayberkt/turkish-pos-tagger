@@ -30,9 +30,6 @@ data POS = Noun
          | Punc
          deriving (Eq, Show, Read, Ord, Enum)
 
-allTags :: [POS]
-allTags = [Noun,Adj,Adv,Verb,Pron,Conj,Det,Postp,Ques,Interj,Num,Dup,Punc]
-
 extractPOS :: String -> POS
 extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
   where notPlus = (/= '+')
