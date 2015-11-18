@@ -52,7 +52,7 @@ printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ extractPOS b))
 -- | Given number of files `numFiles` takes out all word-tag pairs
 -- | from each file indexed from 0 .. `numFiles`, and concatenates
 -- | them.
--- getWords :: ArrowXml cat => FilePath -> cat XmlTree (String, String)
+getWords :: FilePath -> IOSLA (XIOState s) a (String, String)
 getWords f = readDocument [withValidate no] f >>> words
 
 main :: IO ()
@@ -60,7 +60,6 @@ main = do
   files <- getDirectoryContents "tb_uni"
   let file = "tb_uni/" ++ files !! 4
       fileNames = drop 2 . take 100 $ map ("tb_uni/" ++) files
-  -- pairs <- runX $ readDocument [withValidate no] file >>> words
   pairList <- mapM runX $ map getWords fileNames
   let pairs      = foldr (++) [] pairList
       words      = map fst pairs
