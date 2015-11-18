@@ -26,7 +26,13 @@ data POS = Noun
          | Num
          | Dup
          | Punc
-         deriving (Eq, Show, Read)
+         deriving (Eq, Show, Read, Ord, Enum)
+
+posToInt :: POS -> Int
+posToInt p = p `elemIndex` [Noun .. Punc]
+
+intToPos :: Int -> POS
+intToPos i = [Noun .. Punc] !! i
 
 allTags :: [POS]
 allTags = [Noun,Adj,Adv,Verb,Pron,Conj,Det,Postp,Ques,Interj,Num,Dup,Punc]
@@ -73,5 +79,7 @@ main = do
       tags       = map (extractPOS . snd) pairs
       myHMM      = simpleHMM allTags []
       -- trainedHmm = baumWelch myHMM words 10
-  _ <- print trainedHmm
+  print pairList
+  -- print $ zip words tags
+  -- print $ [Noun .. Punc]
   return ()
