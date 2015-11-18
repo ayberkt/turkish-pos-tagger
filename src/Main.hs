@@ -7,6 +7,8 @@ import System.IO hiding (putStr)
 import System.Directory
 -- import qualified Data.Vector.Storable as VS
 import Text.XML.HXT.Core
+import Data.Array
+import Data.List (elemIndex)
 import Prelude hiding (words, putStr)
 
 type TaggedWord = (String, POS)
@@ -28,12 +30,6 @@ data POS = Noun
          | Punc
          deriving (Eq, Show, Read, Ord, Enum)
 
-posToInt :: POS -> Int
-posToInt p = p `elemIndex` [Noun .. Punc]
-
-intToPos :: Int -> POS
-intToPos i = [Noun .. Punc] !! i
-
 allTags :: [POS]
 allTags = [Noun,Adj,Adv,Verb,Pron,Conj,Det,Postp,Ques,Interj,Num,Dup,Punc]
 
@@ -45,11 +41,6 @@ extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
 atTag :: ArrowXml a => String -> a XmlTree XmlTree
 atTag tag = deep (isElem >>> hasName tag)
 
--- | For all children of <S> (i.e., the words) return a tuple containing
--- | the word and the string containing part-of-speech and morpheme
--- | glossing of the word. We are primarily interested in the part-of-speech
--- | contained by this `tagStr` so we will eventually extract it out using
--- | `extractPOS`.
 words :: ArrowXml cat => cat XmlTree (String, String)
 words = atTag "S" >>>
   proc x -> do
@@ -77,9 +68,13 @@ main = do
   let pairs      = foldr (++) [] pairList
       words      = map fst pairs
       tags       = map (extractPOS . snd) pairs
-      myHMM      = simpleHMM allTags []
-      -- trainedHmm = baumWelch myHMM words 10
-  print pairList
+      -- Now let us "index" each of the words with a
+      -- tag index i.e. (fromEnum t) where t ∈ POS.
+      pairs'     = zip (map fromEnum tags) words
+      pairsArr   = array (0, (length pairs')-1) pairs'
+      myHMM      = simpleHMM [0..12] words
+      trainedHmm = baumWelch myHMM pairsArr 10
+  print trainedHmm
   -- print $ zip words tags
   -- print $ [Noun .. Punc]
   return ()
