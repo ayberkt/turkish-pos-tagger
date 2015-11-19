@@ -7,11 +7,12 @@ import Data.Array
 
 main :: IO ()
 main = do
-  -- trainedHMM <- (loadHMM "model.hmm") :: IO (HMM Int String)
+  trainedHMM <- (loadHMM "model.hmm") :: IO (HMM Int String)
   putStr "> "
   hFlush stdout
   input <- getLine
   let ws       = words input
       !wsArray = listArray (0, (length ws)-1) ws
-  print wsArray
+      !out      = viterbi trainedHMM wsArray
+  print $ head out
   return ()
