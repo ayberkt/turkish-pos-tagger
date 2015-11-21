@@ -17,9 +17,13 @@ freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
   where populate ∷ Ord a ⇒ M.Map a ℤ → [a] → M.Map a ℤ
         populate m [] = m
-        populate m (x:xs) = let freq = (M.findWithDefault 0 x m) :: ℤ
+        populate m (x:xs) = let freq = (M.findWithDefault 0 x m) ∷ ℤ
                             in populate (M.insert x (freq + 1) m) xs
 
+-- | Probability of a, given b.
+-- | TODO: Implement
+probability :: POS → POS → ℚ
+probability a b = undefined
 
 main ∷ IO ()
 main = do
