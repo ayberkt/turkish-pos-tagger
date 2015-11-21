@@ -6,7 +6,8 @@ import Prelude hiding (words)
 import Text.XML.HXT.Core
 -- | These are the possible parts-of-speech described in the
 -- | METU-Sabanci treebank paper.
-data POS = Noun
+data POS = Start
+         | Noun
          | Adj
          | Adv
          | Verb
