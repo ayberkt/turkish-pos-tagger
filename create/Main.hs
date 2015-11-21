@@ -35,14 +35,11 @@ main = do
       -- in tagsList and denote this with tagsList'.
       tagsList'      ∷ [[POS]]
       tagsList'      = map ((:) Start) tagsList
-      tagsList''     = foldr (++) [] tagsList'
-      tagBigrams     = [(tagsList'' !! i, tagsList'' !! (i+1))
-                         | i ← [0..length tagsList'' - 2]]
+      -- If we concat all the lists, we're left with just list of tags.
+      tags           = foldr (++) [] tagsList'
+      tagBigrams     = [(tags !! i, tags !! (i+1))
+                         | i ← [0..length tags - 2]]
       tagBigramFreqs = freqMap tagBigrams
-      -- Make a transformation matrix out of this list.
-      -- transMatrix ∷ M.Map (POS, POS) Double
-      -- pairs'     = zip (map fromEnum tags) ws
-      -- pairsArr   = array (0, 1386) $ zip [0..1386] ws
+      tagFreqs       = freqMap tags
   print $ tagBigramFreqs M.! (Noun, Verb)
-  -- print $ tagBigramFreqs M.! (Det, Det)
-  return ()
+  print $ tagFreqs M.! Noun
