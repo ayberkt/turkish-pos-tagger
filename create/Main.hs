@@ -10,8 +10,8 @@ import Prelude hiding (words, putStr)
 import qualified Data.Map as M
 import Parse
 
-type ℤ = Int
-type ℚ = Double
+type ℤ = Int    -- The integer type `Int` will be denoted by ℤ.
+type ℚ = Double -- The double type will be denoted by ℚ.
 
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
@@ -20,10 +20,10 @@ freqMap unigrams = populate M.empty unigrams
         populate m (x:xs) = let freq = (M.findWithDefault 0 x m) ∷ ℤ
                             in populate (M.insert x (freq + 1) m) xs
 
--- | Probability of a, given b.
--- | TODO: Implement
-probability :: POS → POS → ℚ
-probability a b = undefined
+posProbability ∷ POS → POS → M.Map POS ℤ → M.Map (POS, POS) ℤ → ℚ
+posProbability a b m₁ m₂ = fromIntegral bigramFreq / fromIntegral unigramFreq
+  where unigramFreq = M.findWithDefault 0 a m₁
+        bigramFreq  = M.findWithDefault 1 (a, b) m₂
 
 main ∷ IO ()
 main = do
@@ -45,5 +45,4 @@ main = do
                          | i ← [0..length tags - 2]]
       tagBigramFreqs = freqMap tagBigrams
       tagFreqs       = freqMap tags
-  print $ tagBigramFreqs M.! (Noun, Verb)
-  print $ tagFreqs M.! Noun
+  print tagBigramFreqs
