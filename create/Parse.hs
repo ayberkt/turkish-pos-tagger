@@ -1,8 +1,11 @@
-{-# LANGUAGE Arrows, NoMonomorphismRestriction #-}
+{-# LANGUAGE Arrows #-}
+{-# LANGUAGE NoMonomorphismRestriction #-}
+{-# LANGUAGE UnicodeSyntax #-}
 
 module Parse where
 
 import Prelude hiding (words)
+import Data.Char (isSpace)
 import Text.XML.HXT.Core
 -- | These are the possible parts-of-speech described in the
 -- | METU-Sabanci treebank paper.
@@ -40,6 +43,10 @@ words = atTag "S" >>>
 
 printTuple :: (String, String) -> IO ()
 printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ extractPOS b))
+
+parseTupleList ∷ [(String, String)] → [(String, POS)]
+parseTupleList xs = map parseTuple xs
+  where parseTuple (word, info) = (filter (not . isSpace) word, extractPOS info)
 
 -- | Given number of files `numFiles` takes out all word-tag pairs
 -- | from each file indexed from 0 .. `numFiles`, and concatenates
