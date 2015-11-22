@@ -20,10 +20,10 @@ freqMap unigrams = populate M.empty unigrams
         populate m (x:xs) = let freq = (M.findWithDefault 0 x m) ∷ ℤ
                             in populate (M.insert x (freq + 1) m) xs
 
-posProbability ∷ POS → POS → M.Map POS ℤ → M.Map (POS, POS) ℤ → ℚ
-posProbability t tₙₑₓₜ m₁ m₂ = fromIntegral bigramCount / fromIntegral tCount
-  where tCount      = M.findWithDefault 0 t m₁
-        bigramCount = M.findWithDefault 1 (t, tₙₑₓₜ) m₂
+bigramProbability ∷ (POS, POS) → M.Map POS ℤ → M.Map (POS, POS) ℤ → ℚ
+bigramProbability (t, tₙₑₓₜ) m₁ m₂ = bigramCount / tCount
+  where tCount      = fromIntegral (m₁ M.! t) ∷ ℚ
+        bigramCount = fromIntegral (M.findWithDefault 0 (t, tₙₑₓₜ) m₂) ∷ ℚ
 
 main ∷ IO ()
 main = do
@@ -34,15 +34,18 @@ main = do
       -- corpus. the `pairList` that we have right now is a list of
       -- list of tuples. We call `extractPOS` on the `snd` element of
       -- each tuple.
-  let tagsList = map (\xs → map (extractPOS . snd) xs) pairList
+  let tagsList = map (map (extractPOS . snd)) pairList
       -- Now let us append a beginning of sentence POS to each of the lists
       -- in tagsList and denote this with tagsList'.
       tagsList'      ∷ [[POS]]
       tagsList'      = map ((:) Start) tagsList
       -- If we concat all the lists, we're left with just list of tags.
-      tags           = foldr (++) [] tagsList'
+      tags           = concat tagsList'
       tagBigrams     = [(tags !! i, tags !! (i+1))
                          | i ← [0..length tags - 2]]
       tagBigramFreqs = freqMap tagBigrams
       tagFreqs       = freqMap tags
-  print tagBigramFreqs
+  print $ bigramProbability (Start, Noun) tagFreqs tagBigramFreqs
+  print $ bigramProbability (Start, Verb) tagFreqs tagBigramFreqs
+  print $ bigramProbability (Start, Pron) tagFreqs tagBigramFreqs
+  print $ bigramProbability (Noun,  Verb) tagFreqs tagBigramFreqs
