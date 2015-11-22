@@ -21,9 +21,9 @@ freqMap unigrams = populate M.empty unigrams
                             in populate (M.insert x (freq + 1) m) xs
 
 posProbability ∷ POS → POS → M.Map POS ℤ → M.Map (POS, POS) ℤ → ℚ
-posProbability a b m₁ m₂ = fromIntegral bigramFreq / fromIntegral unigramFreq
-  where unigramFreq = M.findWithDefault 0 a m₁
-        bigramFreq  = M.findWithDefault 1 (a, b) m₂
+posProbability t tₙₑₓₜ m₁ m₂ = fromIntegral bigramCount / fromIntegral tCount
+  where tCount      = M.findWithDefault 0 t m₁
+        bigramCount = M.findWithDefault 1 (t, tₙₑₓₜ) m₂
 
 main ∷ IO ()
 main = do
