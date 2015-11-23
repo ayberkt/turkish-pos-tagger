@@ -44,13 +44,18 @@ main = do
       -- For computing the probability of tag bigram
       tagBigrams       = [(ts !! i, ts !! (i+1)) | i ← [0 .. (length ts)-2]]
       tagBigramFreqs   = freqMap tagBigrams
+      -- We will use these to create our HMM.
       transFn s₁ s₂     = logFloat $ probability (s₁, s₂) tagFreqs tagBigramFreqs
       outFn s e        = logFloat $ probability (e, s) wordFreqs taggedWordFreqs
+      initStatesFreqs  = freqMap  $ map (head . map snd) taggedWordsList
+      initProbFn s     = let count  = M.findWithDefault 0 s initStatesFreqs
+                             count' = fromIntegral count
+                             n      = fromIntegral $ length taggedWordsList
+                         in logFloat $ count' / n
       possibleTags     = [Noun .. Unknown]
       newHMM           = HMM { states      = possibleTags ∷ [POS]
                              , events      = ws ∷ [String]
-                             -- TODO: FIX THIS
-                             , initProbs   = \_ → logFloat 0.1
+                             , initProbs   = initProbFn
                              , transMatrix = transFn
                              , outMatrix   = outFn}
       sampleSentence   ∷ Array Int String
@@ -75,5 +80,9 @@ main = do
                                            , "sessizce"
                                            , "uyuyor"
                                            , "."]
-  print $ viterbi newHMM sampleSentence₃
+      sampleSentence₅   = listArray (0, 3) [ "dostlar"
+                                           , "beni"
+                                           , "hatırlasın"
+                                           , "."]
+  print $ viterbi newHMM sampleSentence₅
   return ()
