@@ -8,3 +8,4 @@ to ignore the other files. Thanks!
 - [ ] Correctly isolate sentences from each other
 - [ ] When counting frequencies of words, include each possible POS
 of all words. This should increase the accuracy.
+- [ ] Avoid warnings; this is a hard one since I will have to modify `Data.HMM`.
