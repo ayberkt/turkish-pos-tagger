@@ -23,12 +23,28 @@ data POS = Start
          | Num
          | Dup
          | Punc
+         | Unknown
          deriving (Eq, Show, Read, Ord, Enum)
 
 extractPOS :: String -> POS
-extractPOS x = read $ takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
+extractPOS x = case filter (not . isSpace) wordString of
+                    "Noun"   → Noun
+                    "Adj"    → Adj
+                    "Adv"    → Adv
+                    "Verb"   → Verb
+                    "Pron"   → Pron
+                    "Conj"   → Conj
+                    "Det"    → Det
+                    "Postp"  → Postp
+                    "Ques"   → Ques
+                    "Interj" → Interj
+                    "Num"    → Num
+                    "Dup"    → Dup
+                    "Punc"   → Punc
+                    _        → Unknown
   where notPlus = (/= '+')
         notPlusNorQuote = \n -> notPlus n && n /= '"'
+        wordString = takeWhile notPlusNorQuote . tail $ dropWhile notPlus x
 
 atTag :: ArrowXml a => String -> a XmlTree XmlTree
 atTag tag = deep (isElem >>> hasName tag)
