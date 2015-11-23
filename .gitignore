@@ -1,5 +1,5 @@
 hmm-master
-foo.hmm
+*.hmm
 create-model
 
 *.aux

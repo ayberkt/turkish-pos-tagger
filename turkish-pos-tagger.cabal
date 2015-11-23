@@ -51,6 +51,7 @@ executable tag
                      , vector
                      , directory
   hs-source-dirs:      tag
+                     , create
                      , hmm-master
   main-is:             Main.hs
   default-language:    Haskell2010
