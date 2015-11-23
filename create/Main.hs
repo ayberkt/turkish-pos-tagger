@@ -2,14 +2,15 @@
 
 module Main where
 
-import Data.HMM (viterbi)
+import Data.HMM (viterbi, HMM(..))
 import Test.QuickCheck (quickCheck)
 import System.IO
 import System.Directory
--- import Data.Array
+import Data.Array (listArray, Array(..))
 import Text.XML.HXT.Core
 import Prelude hiding (words, putStr)
 import qualified Data.Map as M
+import Data.Number.LogFloat
 import Parse
 
 type ℤ = Int    -- The integer type `Int` will be denoted by ℤ.
@@ -29,15 +30,6 @@ probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
   where yCount = fromIntegral (M.findWithDefault 0 (x, y) c₂) ∷ ℚ
         xCount = fromIntegral (M.findWithDefault 0 x c₁) ∷ ℚ
 
-data HMM s e = HMM { states :: [s]
-                   , events :: [e]
-                   , initProbs :: (s -> Prob)
-                   , transMatrix :: (s -> s -> Prob)
-                   , outMatrix :: (s -> e -> Prob)
-                   }
-               -- FIXME: This should probably be changed to be HMMArray
-
-
 main ∷ IO ()
 main = do
   files ← getDirectoryContents "tb_uni"
@@ -53,4 +45,17 @@ main = do
       -- For computing the probability of tag bigram
       tagBigrams       = [(ts !! i, ts !! (i+1)) | i ← [0 .. (length ts)-2]]
       tagBigramFreqs   = freqMap tagBigrams
+      transFn s₁ s₂     = logFloat $ probability (s₁, s₂) tagFreqs tagBigramFreqs
+      outFn s e        = logFloat $ probability (e, s) wordFreqs taggedWordFreqs
+      possibleTags     = [Noun .. Unknown]
+      newHMM           = HMM { states      = possibleTags :: [POS]
+                             , events      = ws :: [String]
+                             , initProbs   = \_ → logFloat 0.1
+                             , transMatrix = transFn
+                             , outMatrix   = outFn}
+      sampleSentence   ∷ Array Int String
+      sampleSentence   = listArray (0, 2) [ "adam"
+                                          , "geldi"
+                                          , "."]
+  print $ viterbi newHMM sampleSentence
   return ()
