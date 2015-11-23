@@ -3,7 +3,7 @@
 <W IX="1" LEM="" MORPH=" " IG='[(1,"o+Pron+PersP+A3sg+Pnon+Nom")]' REL="[2,1,(SUBJECT)]"> O </W> 
 <W IX="2" LEM="" MORPH=" " IG='[(1,"naz_et+Verb+Pos+Past+Cond+A3sg")]' REL="[4,2,(MODIFIER)]" ORG_IG1='[(1,"naz+Noun+A3sg+Pnon+Nom")]' ORG_IG2='[(1,"et+Verb+Pos+Past+Cond+A3sg")]'> naz_ettiyse </W> 
 <W IX="3" LEM="" MORPH=" " IG='[(1,"kuru+Adj")(2,"Noun+Zero+A3sg+P3sg+Nom")]' REL="[4,2,(SUBJECT)]"> kurusu </W> 
-<W IX="4" LEM="" MORPH=" " IG='[(1,"var+Adj")(2,"Verb+Zero+A3sg")]' REL="[5,1,(SENTENCE)]"> var </w>
+<W IX="4" LEM="" MORPH=" " IG='[(1,"var+Adj")(2,"Verb+Zero+A3sg")]' REL="[5,1,(SENTENCE)]"> var </W>
 <W IX="5" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
 </S>
 <S No="2">

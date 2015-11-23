@@ -94,7 +94,7 @@
 <W IX="9" LEM="" MORPH=" " IG='[(1,";+Punc")]' REL="[,( )]"> ; </W>
 <W IX="10" LEM="" MORPH=" " IG='[(1,"hem+Conj")]' REL="[14,1,(MODIFIER)]"> hem </W>
 <W IX="11" LEM="" MORPH=" " IG='[(1,"de+Conj")]' REL="[10,1,(INTENSIFIER)]"> de </W>
-<w IX="12" LEM="" MORPH=" " IG='[(1,"i_)_ler+Noun+A3sg+Pnon+Nom")]' REL="[13,1,(MODIFIER)]" ORG_IG1='[(1,"1+Num+Card")]' ORG_IG2='[(1,")+Punc")]' ORG_IG3='[(1,"ler+Noun+A3sg+Pnon+Nom")]'> i_)_ler </W>
+<W IX="12" LEM="" MORPH=" " IG='[(1,"i_)_ler+Noun+A3sg+Pnon+Nom")]' REL="[13,1,(MODIFIER)]" ORG_IG1='[(1,"1+Num+Card")]' ORG_IG2='[(1,")+Punc")]' ORG_IG3='[(1,"ler+Noun+A3sg+Pnon+Nom")]'> i_)_ler </W>
 <W IX="13" LEM="" MORPH=" " IG='[(1,",+Punc")]' REL="[14,1,(COORDINATION)]"> , </W>
 <W IX="14" LEM="" MORPH=" " IG='[(1,"ii_)_ler+Noun+A3sg+Pnon+Ins")]' REL="[8,1,(MODIFIER)]" ORG_IG1='[(1,"2+Num+Card")]' ORG_IG2='[(1,")+Punc")]' ORG_IG3='[(1,"ler+Noun+A3sg+Pnon+Ins")]'> ii_)_lerle </W>
 <W IX="15" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>

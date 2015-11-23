@@ -30,7 +30,7 @@
 <W IX="5" LEM="" MORPH=" " IG='[(1,"devşir+Verb+Neg+Imp+A2sg")]' REL="[6,1,(CLASSIFIER)]"> devşirme </W>
 <W IX="6" LEM="" MORPH=" " IG='[(1,"sınav+Noun+A3pl+P3sg+Nom")]' REL="[8,2,(SUBJECT)]"> sınavları </W>
 <W IX="7" LEM="" MORPH=" " IG='[(1,"falan_filan+Adj")]' REL="[8,2,(VOCATIVE)]" ORG_IG1='[(1,"falan+Noun+A3sg+Pnon+Nom")]' ORG_IG2='[(1,"filan+Adj")]'> falan_filan </W>
-<W IX="8" LEM="" MORPH=" " IG='[(1,"yok+Adj")(2,"Verb+Zero+A3sg")]' REL="[9,1,(SENTENCE)]"> yok </w>
+<W IX="8" LEM="" MORPH=" " IG='[(1,"yok+Adj")(2,"Verb+Zero+A3sg")]' REL="[9,1,(SENTENCE)]"> yok </W>
 <W IX="9" LEM="" MORPH=" " IG='[(1,"...+Punc")]' REL="[,( )]"> ... </W>
 </S>
 <S No="6">
