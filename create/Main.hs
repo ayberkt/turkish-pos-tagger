@@ -2,7 +2,7 @@
 
 module Main where
 
-import Data.HMM (viterbi, HMM(..))
+import Data.HMM (viterbi, HMM(..), saveHMM)
 import System.IO
 import System.Directory
 import Data.Array (listArray, Array)
@@ -49,16 +49,17 @@ main = do
       possibleTags     = [Noun .. Unknown]
       newHMM           = HMM { states      = possibleTags ∷ [POS]
                              , events      = ws ∷ [String]
+                             -- TODO: FIX THIS
                              , initProbs   = \_ → logFloat 0.1
                              , transMatrix = transFn
                              , outMatrix   = outFn}
       sampleSentence   ∷ Array Int String
-      sampleSentence   = listArray (0, 4) [ "Gözleri"
+      sampleSentence   = listArray (0, 4) [ "gözleri"
                                           , "kor"
                                           , "gibi"
                                           , "yanıyordu"
                                           , "."]
-      sampleSentence₂   = listArray (0, 3) [ "Adam"
+      sampleSentence₂   = listArray (0, 3) [ "adam"
                                            , "yine"
                                            , "geldi"
                                            , "."
@@ -68,7 +69,11 @@ main = do
                                            , "mutlu"
                                            , "gözüküyordu"
                                            , "."]
-  print $ viterbi newHMM sampleSentence
-  print $ viterbi newHMM sampleSentence₂
+      sampleSentence₄   = listArray (0, 5) [ "renksiz"
+                                           , "yeşil"
+                                           , "fikirler"
+                                           , "sessizce"
+                                           , "uyuyor"
+                                           , "."]
   print $ viterbi newHMM sampleSentence₃
   return ()

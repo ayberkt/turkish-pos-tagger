@@ -5,7 +5,7 @@
 module Parse where
 
 import Prelude hiding (words)
-import Data.Char (isSpace)
+import Data.Char (isSpace, toLower)
 import Text.XML.HXT.Core
 -- | These are the possible parts-of-speech described in the
 -- | METU-Sabanci treebank paper.
@@ -62,7 +62,10 @@ printTuple (a, b)  = putStrLn (a ++ " " ++ (show $ extractPOS b))
 
 parseTupleList ∷ [(String, String)] → [(String, POS)]
 parseTupleList xs = map parseTuple xs
-  where parseTuple (word, info) = (filter (not . isSpace) word, extractPOS info)
+  where parseTuple (word, info) = (word', info')
+          where lowerCase = toLower (head word) : (tail word)
+                word' = filter (not . isSpace) . map toLower $ lowerCase
+                info' = extractPOS info
 
 -- | Given number of files `numFiles` takes out all word-tag pairs
 -- | from each file indexed from 0 .. `numFiles`, and concatenates
