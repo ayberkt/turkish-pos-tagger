@@ -3,10 +3,9 @@
 module Main where
 
 import Data.HMM (viterbi, HMM(..))
-import Test.QuickCheck (quickCheck)
 import System.IO
 import System.Directory
-import Data.Array (listArray, Array(..))
+import Data.Array (listArray, Array)
 import Text.XML.HXT.Core
 import Prelude hiding (words, putStr)
 import qualified Data.Map as M
@@ -25,7 +24,7 @@ freqMap unigrams = populate M.empty unigrams
 
 probability ∷ (Ord a, Ord b) ⇒ (a, b) → M.Map a ℤ → M.Map (a, b) ℤ → ℚ
 probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
-                           then 0
+                           then 0.0001
                            else yCount / xCount
   where yCount = fromIntegral (M.findWithDefault 0 (x, y) c₂) ∷ ℚ
         xCount = fromIntegral (M.findWithDefault 0 x c₁) ∷ ℚ
@@ -33,7 +32,7 @@ probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
 main ∷ IO ()
 main = do
   files ← getDirectoryContents "tb_uni"
-  let fileNames = drop 2 . take 1000 $ map ("tb_uni/" ++) files
+  let fileNames = drop 2 . take 1500 $ map ("tb_uni/" ++) files
   pairList ← mapM runX $ map getWords fileNames
   let taggedWordsList  = map parseTupleList pairList
       taggedWords      = concat taggedWordsList
@@ -48,14 +47,28 @@ main = do
       transFn s₁ s₂     = logFloat $ probability (s₁, s₂) tagFreqs tagBigramFreqs
       outFn s e        = logFloat $ probability (e, s) wordFreqs taggedWordFreqs
       possibleTags     = [Noun .. Unknown]
-      newHMM           = HMM { states      = possibleTags :: [POS]
-                             , events      = ws :: [String]
+      newHMM           = HMM { states      = possibleTags ∷ [POS]
+                             , events      = ws ∷ [String]
                              , initProbs   = \_ → logFloat 0.1
                              , transMatrix = transFn
                              , outMatrix   = outFn}
       sampleSentence   ∷ Array Int String
-      sampleSentence   = listArray (0, 2) [ "adam"
-                                          , "geldi"
+      sampleSentence   = listArray (0, 4) [ "Gözleri"
+                                          , "kor"
+                                          , "gibi"
+                                          , "yanıyordu"
                                           , "."]
+      sampleSentence₂   = listArray (0, 3) [ "Adam"
+                                           , "yine"
+                                           , "geldi"
+                                           , "."
+                                           ]
+      sampleSentence₃   = listArray (0, 4) [ "güzel"
+                                           , "kız"
+                                           , "mutlu"
+                                           , "gözüküyordu"
+                                           , "."]
   print $ viterbi newHMM sampleSentence
+  print $ viterbi newHMM sampleSentence₂
+  print $ viterbi newHMM sampleSentence₃
   return ()
