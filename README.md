@@ -7,5 +7,7 @@ to ignore the other files. Thanks!
 ## TODO
 - [ ] Correctly isolate sentences from each other
 - [ ] When counting frequencies of words, include each possible POS
-of all words. This should increase the accuracy.
+      of all words. This should increase the accuracy.
+- [ ] I might be able to increase the accuracy by filtering some of the
+      data from the treebank e.g. ignoring commas might increase accuracy.
 - [ ] Avoid warnings; this is a hard one since I will have to modify `Data.HMM`.
