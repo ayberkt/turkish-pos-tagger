@@ -2,7 +2,7 @@
 
 module Main where
 
-import Data.HMM (viterbi, HMM(..), saveHMM)
+import Data.HMM (viterbi, HMM(..))
 import System.IO
 import System.Directory
 import Data.Array (listArray, Array)
@@ -84,5 +84,6 @@ main = do
                                            , "beni"
                                            , "hatırlasın"
                                            , "."]
+  writeFile "model.hmm" (show newHMM)
   print $ viterbi newHMM sampleSentence₅
   return ()
