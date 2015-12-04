@@ -5,10 +5,12 @@ module Main where
 import           Data.Array           (Array, listArray)
 import           Data.HMM             (HMM (..), viterbi)
 import qualified Data.Map             as M
+import           Data.List            (intercalate)
 import           Data.Number.LogFloat
 import           Parse
-import           Prelude              hiding (putStr, words)
+import           Prelude              hiding (putStr, words, lines)
 import           System.Directory
+import           System.IO (putStr)
 import           Text.XML.HXT.Core
 
 type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
@@ -49,6 +51,12 @@ sampleSentence₅   = listArray (0, 3) [ "dostlar"
                                     , "beni"
                                     , "hatırlasın"
                                     , "."]
+
+printTaggedSent ∷ Array Int String → [POS] → IO ()
+printTaggedSent ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
+                        in do putStrLn $ foldr (++) " "   $ (++ " ") <$> ws
+                              putStrLn $ foldr (++) " "   $ (++ " ") <$> lines
+                              putStrLn $ intercalate "  " $  map show ps
 
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
@@ -98,8 +106,12 @@ main = do
                              , outMatrix   = outFn}
   writeFile "model.hmm" (show newHMM)
   putStrLn "Creating the model..."
-  print $ viterbi newHMM sampleSentence₁
-  print $ viterbi newHMM sampleSentence₂
-  print $ viterbi newHMM sampleSentence₃
-  print $ viterbi newHMM sampleSentence₄
-  print $ viterbi newHMM sampleSentence₅
+  printTaggedSent sampleSentence₁ $ viterbi newHMM sampleSentence₁
+  putStr "\n"
+  printTaggedSent sampleSentence₂ $ viterbi newHMM sampleSentence₂
+  putStr "\n"
+  printTaggedSent sampleSentence₃ $ viterbi newHMM sampleSentence₃
+  putStr "\n"
+  printTaggedSent sampleSentence₄ $ viterbi newHMM sampleSentence₄
+  putStr "\n"
+  printTaggedSent sampleSentence₅ $ viterbi newHMM sampleSentence₅
