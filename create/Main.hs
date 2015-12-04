@@ -17,6 +17,11 @@ type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
 type ℚ = Double   -- The double type will be denoted by ℚ.
 type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
 
+ε ∷ Double
+ε = encodeFloat 1 $ fst  r - ds
+  where r  = floatRange (0.1 :: Double)
+        ds = floatDigits (0.1 :: Double)
+
 sampleSentence₁ ∷ Array Int String
 sampleSentence₁ = listArray (0, 4) [ "gözleri"
                                     , "kor"
@@ -70,7 +75,7 @@ freqMap unigrams = populate M.empty unigrams
 --    counting the number of bigrams.
 probability ∷ (Ord a, Ord b) ⇒ (a, b) → M.Map a ℤ → M.Map (a, b) ℤ → 𝓛
 probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
-                           then 0.0001
+                           then logFloat ε
                            else (logFloat yCount) / (logFloat xCount)
   where yCount = fromIntegral (M.findWithDefault 0 (x, y) c₂) ∷ ℚ
         xCount = fromIntegral (M.findWithDefault 0 x c₁) ∷ ℚ
