@@ -10,7 +10,7 @@ import           Data.Number.LogFloat
 import           Parse
 import           Prelude              hiding (putStr, words, lines)
 import           System.Directory
-import           System.IO (putStr)
+-- import           System.IO (putStr)
 import           Text.XML.HXT.Core
 
 type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
@@ -22,46 +22,95 @@ type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
   where r  = floatRange (0.1 :: Double)
         ds = floatDigits (0.1 :: Double)
 
-sampleSentence₁ ∷ Array Int String
-sampleSentence₁ = listArray (0, 4) [ "gözleri"
-                                    , "kor"
-                                    , "gibi"
-                                    , "yanıyordu"
-                                    , "."]
+sample₁ ∷ Array Int String
+sample₁ = listArray (0, 4) [ "gözleri"
+                           , "kor"
+                           , "gibi"
+                           , "yanıyordu"
+                           , "."]
 
-sampleSentence₂ ∷ Array Int String
-sampleSentence₂ = listArray (0, 3) [ "adam"
-                                    , "yine"
-                                    , "geldi"
-                                    , "."
-                                    ]
+sample₂ ∷ Array Int String
+sample₂ = listArray (0, 3) [ "adam"
+                           , "yine"
+                           , "geldi"
+                           , "."
+                           ]
 
-sampleSentence₃ ∷ Array Int String
-sampleSentence₃ = listArray (0, 4) [ "güzel"
-                                    , "kız"
-                                    , "mutlu"
-                                    , "gözüküyordu"
-                                    , "."]
+sample₃ ∷ Array Int String
+sample₃ = listArray (0, 4) [ "güzel"
+                           , "kız"
+                           , "mutlu"
+                           , "gözüküyordu"
+                           , "."]
 
-sampleSentence₄ ∷ Array Int String
-sampleSentence₄   = listArray (0, 5) [ "renksiz"
-                                    , "yeşil"
-                                    , "fikirler"
-                                    , "sessizce"
-                                    , "uyuyor"
-                                    , "."]
+sample₄ ∷ Array Int String
+sample₄   = listArray (0, 5) [ "renksiz"
+                             , "yeşil"
+                             , "fikirler"
+                             , "sessizce"
+                             , "uyuyor"
+                             , "."
+                             ]
 
-sampleSentence₅ ∷ Array Int String
-sampleSentence₅   = listArray (0, 3) [ "dostlar"
-                                    , "beni"
-                                    , "hatırlasın"
-                                    , "."]
+sample₅ ∷ Array Int String
+sample₅   = listArray (0, 3) [ "dostlar"
+                             , "beni"
+                             , "hatırlasın"
+                             , "."
+                             ]
 
-printTaggedSent ∷ Array Int String → [POS] → IO ()
-printTaggedSent ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
-                        in do putStrLn $ foldr (++) " "   $ (++ " ") <$> ws
-                              putStrLn $ foldr (++) " "   $ (++ " ") <$> lines
-                              putStrLn $ intercalate "  " $  map show ps
+sample₆ ∷ Array Int String
+sample₆ = listArray (0, 25) [ "Cebren"
+                            , "ve"
+                            , "hile"
+                            , "ile"
+                            , "aziz"
+                            , "vatanın"
+                            , ","
+                            , "bütün"
+                            , "kaleleri"
+                            , "zaptedilmiş"
+                            , "bütün"
+                            , "tersanelerine"
+                            , "girilmiş"
+                            , ","
+                            , "bütün"
+                            ,"orduları"
+                            ,"dağıtılmış"
+                            , "ve"
+                            , "memleketin"
+                            ,"her"
+                            ,"köşesi"
+                            ,"bilfiil"
+                            ,"işgal"
+                            ,"edilmiş"
+                            ,"olabilir"
+                            ,"."
+                            ]
+
+pretty ∷ Array Int String → [POS] → IO ()
+pretty ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
+                   align ∷ String → String → String
+                   align w t = let
+                     n      = max 0 (length w - (length t)) `div` 2
+                     spaces = replicate n ' '
+                     in spaces ++ t ++ spaces
+                   wsList   = foldr (:) [] ws
+                   pStrings = map show ps
+               in do putStrLn $ intercalate " " wsList
+                     putStrLn $ foldr (++) " "   $ (++ " ") <$> lines
+                     putStrLn $ intercalate "  " $
+                       zipWith align wsList pStrings
+
+table ∷ Array Int String → [POS] → String
+table ws ps = let makeItem w = "<th align=\"center\">" ++ w ++ "</th>"
+                  makeRow xs = "<tr>" ++ concat (map makeItem xs) ++ "</tr>"
+                  wRow = makeRow $ foldr (:) [] ws
+                  pRow = makeRow $ map show ps
+              in    "<html><table>"
+                 ++ wRow
+                 ++ pRow
+                 ++ "</table></html>"
 
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
@@ -110,13 +159,15 @@ main = do
                              , transMatrix = transFn
                              , outMatrix   = outFn}
   writeFile "model.hmm" (show newHMM)
-  putStrLn "Creating the model..."
-  printTaggedSent sampleSentence₁ $ viterbi newHMM sampleSentence₁
-  putStr "\n"
-  printTaggedSent sampleSentence₂ $ viterbi newHMM sampleSentence₂
-  putStr "\n"
-  printTaggedSent sampleSentence₃ $ viterbi newHMM sampleSentence₃
-  putStr "\n"
-  printTaggedSent sampleSentence₄ $ viterbi newHMM sampleSentence₄
-  putStr "\n"
-  printTaggedSent sampleSentence₅ $ viterbi newHMM sampleSentence₅
+  -- putStrLn "Creating the model..."
+  putStrLn $ table sample₆ $ viterbi newHMM sample₆
+  -- putStr "\n"
+  -- pretty sample₂ $ viterbi newHMM sample₂
+  -- putStr "\n"
+  -- pretty sample₃ $ viterbi newHMM sample₃
+  -- putStr "\n"
+  -- pretty sample₄ $ viterbi newHMM sample₄
+  -- putStr "\n"
+  -- pretty sample₅ $ viterbi newHMM sample₅
+  -- putStr "\n"
+  -- pretty sample₆ $ viterbi newHMM sample₆
