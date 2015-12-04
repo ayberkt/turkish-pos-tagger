@@ -11,6 +11,7 @@ create-model
 *.dvi
 *.synctex.gz
 proposal/auto
+paper/auto
 
 # trivial gitignore file
 .cabal-sandbox/

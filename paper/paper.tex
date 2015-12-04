@@ -1,48 +1,90 @@
 \documentclass{article}
 \usepackage{natbib}
 \usepackage{todonotes}
+\usepackage{hyperref}
 
-\title{\bf Final Project Proposal}
-\author{Your Name}
-\date{Due date: 8 December 2015 at 11:59 PM Central time}
+\newcommand{\hmmURL}{https://hackage.haskell.org/package/hmm-0.2.1.1/docs/Data-HMM.html}
+
+\title{\bf An HMM-based part-of-speech tagger for Turkish}
+\author{Ayberk Tosun}
+\date{}
 
 \begin{document}
 \maketitle
 
-
-% Lines that begin with % are comments.
-
-
 \section{Motivation}
 \label{sec:motivation}
-
-% Delete this todo
-\todo[inline]{
-Write an introductory section that motivates a particular problem you wish to solve. This section should (at a minimum) fill the remainder of this page.
-}
-
+My main motivation for undertaking this project is to understand the
+principles underlying POS-tagging. Due to time and resource constraints, it is
+not possible for me to build a state-of-the-art POS-tagger for
+Turkish. Nevertheless, I expect my POS-tagger
+to work with a decent accuracy that is adequate to be a starting point for
+further development. Moreover, \citet{Korkut2015} began the development of a
+Turkish NLP framework named ``Guguk,'' implemented in the programming language Haskell. I intend
+to merge this project to Guguk, hence contributing towards
+the existence of a Turkish NLP-framework in Haskell.
 
 \section{Related Work}
+\label{sec:related_work}
 
-% Delete this todo
-\todo[inline]{%
-Briefly survey the most salient prior work that relates to the problem you wish to solve. This section should cite relevant sources. This section should be at half a page in length.
-}
+% Briefly survey the most salient prior work that relates to the problem you wish
+% to solve. This section should cite relevant sources. This section should be at
+% least one to two paragraphs in length.
+The most important advancement in the computational linguistics of Turkish is
+probably the NLP framework ``Zemberek'' by \citet{akin2007zemberek}, which has been
+immensely useful for both the theory and practice of Turkish NLP. Although it started
+out as an NLP tool for the Turkish language, Zemberek moved on to become a
+a tool for processing all Turkic languages.
 
+The widely cited \citet{oflazer1994tagging} outlines the implementation of a
+tool for both morpheme glossing and POS tagging, that has ``98-99 \%'' accuracy. This
+tool is based on a morphological specification of Turkish and makes use of a
+morphological processor called ``PC-Kimmo'' \citep{antworth1991pc}.
 
-\section{Proposed Work}
+In general, most of the literature relating to the computational processing of Turkish
+pertain primarily to morphology---compared to the complexity of Turkish
+morphology, its syntax seems to be a less interesting problem.
+\section{Proposal}
 
-% Delete this todo
-\todo[inline]{This section should contain a detailed description of the work you propose to do, but it should not contain any experimental results. This section should take at least a page and a half.}
+I will implement a part-of-speech tagger for the Turkish language. As
+mentioned in section~\ref{sec:related_work}, I will mostly focus on parts-of-speech
+of words\footnote{I base my definition of a ``word'' on the orthographic space in
+  most of the cases. There are certain exceptions to this, such as
+  reduplication which I denote with the POS tag ``Dup''} and will not be accounting for morphology, unlike
+the case with most of the serious research on Turkish NLP. There definitely are
+problems with this approach---but fixing these would go beyond the scope of
+this class
 
-
+For programming the POS tagger I will be using Haskell, a statically-typed and purely
+functional programming language, along with the
+\href{\hmmURL}{\texttt{Data.HMM}} package.
+The data, that is probably the most important component of this
+project, comes from the METU-Sabanc{\i} treebank built by
+\citet{oflazer2003building}.  I am planning to strip the POS tag for each word from
+the treebank and use those to train the HMM
 
 \section{Results}
 
-% Delete this todo
-\todo[inline]{This section should describe the your results. In other words, after you do what you proposed in section 3, what results did you come up with? This section should be at least one page in length.
-}
+The POS tagger I've built as proposed can successfully tag words with a
+reasonable accuracy.
 
+\subsection{Limitations}
+There is a fundamental limitation to the POS tagger I built: Turkish morphology
+is essential to the overall expressivity of the Turkish language. In English we
+entertain the notion of ``syntactic correctness'', which we define as words of a
+sentence having some sort of correct order. A speaker of English that has
+synactic competence in the language \citep{bachman1990} may know that a sentence
+is well-formed, relying on his knowledge of syntactic rules. However, for
+\textit{words}, knowledge of morphological rules is not adequate to conclude
+that a word is valid; they have to rely on their lexical knowledge to verify
+that the morphological form they derived/inflected is a valid one. Consider the
+word ``satisfiableness'' which is not a valid word, derived with valid suffixes.
+The correct form of this concept is ``satisfiability''. In Turkish, the concept
+of word validness is a lot like syntactic correctness; the speaker may rely
+their knowledge of morphological rules to \textit{generate} new words. In fact
+Turkish has \textbf{recursive} morphology \citep{kabak2001} so a word can be
+inflected/derived in into infinitely many different ways. This is why
+computational processing of Turkish can never fully escape its morphology.
 
 \section{Conclusion}
 
