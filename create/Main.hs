@@ -2,18 +2,18 @@
 
 module Main where
 
-import Data.HMM (viterbi, HMM(..))
-import System.IO
-import System.Directory
-import Data.Array (listArray, Array)
-import Text.XML.HXT.Core
-import Prelude hiding (words, putStr)
-import qualified Data.Map as M
-import Data.Number.LogFloat
-import Parse
+import           Data.Array           (Array, listArray)
+import           Data.HMM             (HMM (..), viterbi)
+import qualified Data.Map             as M
+import           Data.Number.LogFloat
+import           Parse
+import           Prelude              hiding (putStr, words)
+import           System.Directory
+import           Text.XML.HXT.Core
 
-type ℤ = Int    -- The integer type `Int` will be denoted by ℤ.
-type ℚ = Double -- The double type will be denoted by ℚ.
+type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
+type ℚ = Double   -- The double type will be denoted by ℚ.
+type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
 
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
@@ -22,10 +22,13 @@ freqMap unigrams = populate M.empty unigrams
         populate m (x:xs) = let freq = (M.findWithDefault 0 x m) ∷ ℤ
                             in populate (M.insert x (freq + 1) m) xs
 
-probability ∷ (Ord a, Ord b) ⇒ (a, b) → M.Map a ℤ → M.Map (a, b) ℤ → ℚ
+--  | Takes in a tuple (x, y) (i.e., a bigram), and takes in two frequency maps
+--    c₁ and c₂, c₁ for counting all the occurrences of x and the other for
+--    counting the number of bigrams.
+probability ∷ (Ord a, Ord b) ⇒ (a, b) → M.Map a ℤ → M.Map (a, b) ℤ → 𝓛
 probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
                            then 0.0001
-                           else yCount / xCount
+                           else (logFloat yCount) / (logFloat xCount)
   where yCount = fromIntegral (M.findWithDefault 0 (x, y) c₂) ∷ ℚ
         xCount = fromIntegral (M.findWithDefault 0 x c₁) ∷ ℚ
 
@@ -45,8 +48,8 @@ main = do
       tagBigrams       = [(ts !! i, ts !! (i+1)) | i ← [0 .. (length ts)-2]]
       tagBigramFreqs   = freqMap tagBigrams
       -- We will use these to create our HMM.
-      transFn s₁ s₂     = logFloat $ probability (s₁, s₂) tagFreqs tagBigramFreqs
-      outFn s e        = logFloat $ probability (e, s) wordFreqs taggedWordFreqs
+      transFn s₁ s₂     = probability (s₁, s₂) tagFreqs tagBigramFreqs
+      outFn s e        = probability (e, s) wordFreqs taggedWordFreqs
       initStatesFreqs  = freqMap  $ map (head . map snd) taggedWordsList
       initProbFn s     = let count  = M.findWithDefault 0 s initStatesFreqs
                              count' = fromIntegral count
@@ -85,5 +88,9 @@ main = do
                                            , "hatırlasın"
                                            , "."]
   writeFile "model.hmm" (show newHMM)
+  putStrLn "Creating the model..."
+  print $ viterbi newHMM sampleSentence
+  print $ viterbi newHMM sampleSentence₂
+  print $ viterbi newHMM sampleSentence₃
+  print $ viterbi newHMM sampleSentence₄
   print $ viterbi newHMM sampleSentence₅
-  return ()

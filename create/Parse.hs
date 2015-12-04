@@ -1,6 +1,6 @@
-{-# LANGUAGE Arrows #-}
+{-# LANGUAGE Arrows                    #-}
 {-# LANGUAGE NoMonomorphismRestriction #-}
-{-# LANGUAGE UnicodeSyntax #-}
+{-# LANGUAGE UnicodeSyntax             #-}
 
 module Parse where
 
@@ -9,8 +9,7 @@ import Data.Char (isSpace, toLower)
 import Text.XML.HXT.Core
 -- | These are the possible parts-of-speech described in the
 -- | METU-Sabanci treebank paper.
-data POS = Start
-         | Noun
+data POS = Noun
          | Adj
          | Adv
          | Verb
