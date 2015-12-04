@@ -15,6 +15,41 @@ type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
 type ℚ = Double   -- The double type will be denoted by ℚ.
 type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
 
+sampleSentence₁ ∷ Array Int String
+sampleSentence₁ = listArray (0, 4) [ "gözleri"
+                                    , "kor"
+                                    , "gibi"
+                                    , "yanıyordu"
+                                    , "."]
+
+sampleSentence₂ ∷ Array Int String
+sampleSentence₂ = listArray (0, 3) [ "adam"
+                                    , "yine"
+                                    , "geldi"
+                                    , "."
+                                    ]
+
+sampleSentence₃ ∷ Array Int String
+sampleSentence₃ = listArray (0, 4) [ "güzel"
+                                    , "kız"
+                                    , "mutlu"
+                                    , "gözüküyordu"
+                                    , "."]
+
+sampleSentence₄ ∷ Array Int String
+sampleSentence₄   = listArray (0, 5) [ "renksiz"
+                                    , "yeşil"
+                                    , "fikirler"
+                                    , "sessizce"
+                                    , "uyuyor"
+                                    , "."]
+
+sampleSentence₅ ∷ Array Int String
+sampleSentence₅   = listArray (0, 3) [ "dostlar"
+                                    , "beni"
+                                    , "hatırlasın"
+                                    , "."]
+
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
   where populate ∷ Ord a ⇒ M.Map a ℤ → [a] → M.Map a ℤ
@@ -61,35 +96,9 @@ main = do
                              , initProbs   = initProbFn
                              , transMatrix = transFn
                              , outMatrix   = outFn}
-      sampleSentence   ∷ Array Int String
-      sampleSentence   = listArray (0, 4) [ "gözleri"
-                                          , "kor"
-                                          , "gibi"
-                                          , "yanıyordu"
-                                          , "."]
-      sampleSentence₂   = listArray (0, 3) [ "adam"
-                                           , "yine"
-                                           , "geldi"
-                                           , "."
-                                           ]
-      sampleSentence₃   = listArray (0, 4) [ "güzel"
-                                           , "kız"
-                                           , "mutlu"
-                                           , "gözüküyordu"
-                                           , "."]
-      sampleSentence₄   = listArray (0, 5) [ "renksiz"
-                                           , "yeşil"
-                                           , "fikirler"
-                                           , "sessizce"
-                                           , "uyuyor"
-                                           , "."]
-      sampleSentence₅   = listArray (0, 3) [ "dostlar"
-                                           , "beni"
-                                           , "hatırlasın"
-                                           , "."]
   writeFile "model.hmm" (show newHMM)
   putStrLn "Creating the model..."
-  print $ viterbi newHMM sampleSentence
+  print $ viterbi newHMM sampleSentence₁
   print $ viterbi newHMM sampleSentence₂
   print $ viterbi newHMM sampleSentence₃
   print $ viterbi newHMM sampleSentence₄
