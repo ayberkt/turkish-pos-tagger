@@ -1,4 +1,5 @@
 {-# LANGUAGE UnicodeSyntax #-}
+{-# LANGUAGE BangPatterns  #-}
 
 module Main where
 
@@ -88,6 +89,13 @@ sample₆ = listArray (0, 25) [ "Cebren"
                             ,"."
                             ]
 
+sample₇ ∷ Array Int String
+sample₇ = listArray (0, 4) [ "Adam"
+                           , "sırıta"
+                           , "sırıta"
+                           , "yürüyordu"
+                           , "."]
+
 pretty ∷ Array Int String → [POS] → IO ()
 pretty ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
                    align ∷ String → String → String
@@ -103,12 +111,15 @@ pretty ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
                        zipWith align wsList pStrings
 
 table ∷ Array Int String → [POS] → String
-table ws ps = let makeItem w = "<th align=\"center\">" ++ w ++ "</th>"
+table ws ps = let len        = length ws
+                  makeItem w = "<th align=\"center\">" ++ w ++ "</th>"
                   makeRow xs = "<tr>" ++ concat (map makeItem xs) ++ "</tr>"
-                  wRow = makeRow $ foldr (:) [] ws
-                  pRow = makeRow $ map show ps
+                  wRow       = makeRow $ foldr (:) [] ws
+                  pRow       = makeRow $ map show ps
+                  arrows     = makeRow $ replicate len "↑"
               in    "<html><table>"
                  ++ wRow
+                 ++ arrows
                  ++ pRow
                  ++ "</table></html>"
 
@@ -153,7 +164,7 @@ main = do
                              n      = fromIntegral $ length taggedWordsList
                          in logFloat $ count' / n
       possibleTags     = [Noun .. Unknown]
-      newHMM           = HMM { states      = possibleTags ∷ [POS]
+      !newHMM           = HMM { states      = possibleTags ∷ [POS]
                              , events      = ws ∷ [String]
                              , initProbs   = initProbFn
                              , transMatrix = transFn
@@ -161,6 +172,7 @@ main = do
   writeFile "model.hmm" (show newHMM)
   -- putStrLn "Creating the model..."
   putStrLn $ table sample₆ $ viterbi newHMM sample₆
+  putStrLn $ table sample₇ $ viterbi newHMM sample₇
   -- putStr "\n"
   -- pretty sample₂ $ viterbi newHMM sample₂
   -- putStr "\n"
