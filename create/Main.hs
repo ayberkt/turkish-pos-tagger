@@ -4,7 +4,10 @@
 module Main where
 
 import           Data.Array           (Array, listArray)
-import           Data.HMM             (HMM (..), viterbi)
+import           Data.HMM             ( HMM (..)
+                                      , viterbi
+                                      , saveHMM
+                                      , loadHMM)
 import qualified Data.Map             as M
 import           Data.List            (intercalate)
 import           Data.Number.LogFloat
@@ -22,93 +25,6 @@ type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
 ε = encodeFloat 1 $ fst  r - ds
   where r  = floatRange (0.1 :: Double)
         ds = floatDigits (0.1 :: Double)
-
-sample₁ ∷ Array Int String
-sample₁ = listArray (0, 4) [ "gözleri"
-                           , "kor"
-                           , "gibi"
-                           , "yanıyordu"
-                           , "."]
-
-sample₂ ∷ Array Int String
-sample₂ = listArray (0, 3) [ "adam"
-                           , "yine"
-                           , "geldi"
-                           , "."
-                           ]
-
-sample₃ ∷ Array Int String
-sample₃ = listArray (0, 4) [ "güzel"
-                           , "kız"
-                           , "mutlu"
-                           , "gözüküyordu"
-                           , "."]
-
-sample₄ ∷ Array Int String
-sample₄   = listArray (0, 5) [ "renksiz"
-                             , "yeşil"
-                             , "fikirler"
-                             , "sessizce"
-                             , "uyuyor"
-                             , "."
-                             ]
-
-sample₅ ∷ Array Int String
-sample₅   = listArray (0, 3) [ "dostlar"
-                             , "beni"
-                             , "hatırlasın"
-                             , "."
-                             ]
-
-sample₆ ∷ Array Int String
-sample₆ = listArray (0, 25) [ "Cebren"
-                            , "ve"
-                            , "hile"
-                            , "ile"
-                            , "aziz"
-                            , "vatanın"
-                            , ","
-                            , "bütün"
-                            , "kaleleri"
-                            , "zaptedilmiş"
-                            , "bütün"
-                            , "tersanelerine"
-                            , "girilmiş"
-                            , ","
-                            , "bütün"
-                            ,"orduları"
-                            ,"dağıtılmış"
-                            , "ve"
-                            , "memleketin"
-                            ,"her"
-                            ,"köşesi"
-                            ,"bilfiil"
-                            ,"işgal"
-                            ,"edilmiş"
-                            ,"olabilir"
-                            ,"."
-                            ]
-
-sample₇ ∷ Array Int String
-sample₇ = listArray (0, 4) [ "Adam"
-                           , "sırıta"
-                           , "sırıta"
-                           , "yürüyordu"
-                           , "."]
-
-pretty ∷ Array Int String → [POS] → IO ()
-pretty ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
-                   align ∷ String → String → String
-                   align w t = let
-                     n      = max 0 (length w - (length t)) `div` 2
-                     spaces = replicate n ' '
-                     in spaces ++ t ++ spaces
-                   wsList   = foldr (:) [] ws
-                   pStrings = map show ps
-               in do putStrLn $ intercalate " " wsList
-                     putStrLn $ foldr (++) " "   $ (++ " ") <$> lines
-                     putStrLn $ intercalate "  " $
-                       zipWith align wsList pStrings
 
 table ∷ Array Int String → [POS] → String
 table ws ps = let len        = length ws
@@ -146,6 +62,7 @@ main = do
   let fileNames = drop 2 . take 1500 $ map ("tb_uni/" ++) files
   pairList ← mapM runX $ map getWords fileNames
   let taggedWordsList  = map parseTupleList pairList
+      taggedWords ∷ [(String, POS)]
       taggedWords      = concat taggedWordsList
       (ws, ts)         = unzip taggedWords
       -- For computing the probability of word-tag pair.
@@ -169,10 +86,14 @@ main = do
                              , initProbs   = initProbFn
                              , transMatrix = transFn
                              , outMatrix   = outFn}
-  writeFile "model.hmm" (show newHMM)
+  writeFile "model/tagFreqs.hs"        (show tagFreqs)
+  writeFile "model/wordFreqs.hs"       (show wordFreqs)
+  writeFile "model/tagBigramFreqs.hs"  (show tagBigramFreqs)
+  writeFile "model/taggedWordFreqs.hs" (show taggedWordFreqs)
+  writeFile "model/initStatesFreqs.hs" (show initStatesFreqs)
+  writeFile "model/words.hs" (show ws)
+  return ()
   -- putStrLn "Creating the model..."
-  putStrLn $ table sample₆ $ viterbi newHMM sample₆
-  putStrLn $ table sample₇ $ viterbi newHMM sample₇
   -- putStr "\n"
   -- pretty sample₂ $ viterbi newHMM sample₂
   -- putStr "\n"
