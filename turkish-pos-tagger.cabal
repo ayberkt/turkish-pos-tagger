@@ -18,7 +18,7 @@ cabal-version:       >=1.10
 
 
 executable create-model
-  ghc-options:         -Wall -fno-warn-orphans
+  ghc-options:         -W -Wall -fno-warn-orphans -fwarn-tabs
   build-depends:       base >=4.8 && <4.9
                      , array
                      , list-extras >= 0.4

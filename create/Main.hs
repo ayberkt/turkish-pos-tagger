@@ -3,13 +3,11 @@
 
 module Main where
 
-import           Data.Array           (Array)
 import qualified Data.Map             as M
 import           Data.Number.LogFloat
 import           Parse
 import           Prelude              hiding (putStr, words, lines)
 import           System.Directory
--- import           System.IO (putStr)
 import           Text.XML.HXT.Core
 
 type ℤ = Int      -- The integer type `Int` will be denoted by ℤ.
@@ -20,19 +18,6 @@ type 𝓛 = LogFloat -- Log-domain numbers to prevent underflow.
 ε = encodeFloat 1 $ fst  r - ds
   where r  = floatRange (0.1 :: Double)
         ds = floatDigits (0.1 :: Double)
-
-table ∷ Array Int String → [POS] → String
-table ws ps = let len        = length ws
-                  makeItem w = "<th align=\"center\">" ++ w ++ "</th>"
-                  makeRow xs = "<tr>" ++ concat (map makeItem xs) ++ "</tr>"
-                  wRow       = makeRow $ foldr (:) [] ws
-                  pRow       = makeRow $ map show ps
-                  arrows     = makeRow $ replicate len "↑"
-              in    "<html><table>"
-                 ++ wRow
-                 ++ arrows
-                 ++ pRow
-                 ++ "</table></html>"
 
 freqMap ∷ Ord a ⇒ [a] → M.Map a ℤ
 freqMap unigrams = populate M.empty unigrams
@@ -76,15 +61,4 @@ main = do
   writeFile "model/taggedWordFreqs.hs" (show taggedWordFreqs)
   writeFile "model/initStatesFreqs.hs" (show initStatesFreqs)
   writeFile "model/words.hs" (show ws)
-  return ()
-  -- putStrLn "Creating the model..."
-  -- putStr "\n"
-  -- pretty sample₂ $ viterbi newHMM sample₂
-  -- putStr "\n"
-  -- pretty sample₃ $ viterbi newHMM sample₃
-  -- putStr "\n"
-  -- pretty sample₄ $ viterbi newHMM sample₄
-  -- putStr "\n"
-  -- pretty sample₅ $ viterbi newHMM sample₅
-  -- putStr "\n"
-  -- pretty sample₆ $ viterbi newHMM sample₆
+  putStrLn "Successfully saved model in model."

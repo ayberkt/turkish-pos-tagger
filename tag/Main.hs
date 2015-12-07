@@ -3,7 +3,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE FlexibleInstances  #-}
 
-module Main where
+module Main (main) where
 
 import Prelude hiding (lines)
 import Data.HMM (viterbi, HMM(..))
@@ -117,6 +117,19 @@ pretty ws ps = let lines = (\n → replicate n '-') <$> (length <$> ws)
                      putStrLn $ intercalate "  " $
                        zipWith align wsList pStrings
 
+table ∷ Array Int String → [POS] → String
+table ws ps = let len        = length ws
+                  makeItem w = "<th align=\"center\">" ++ w ++ "</th>"
+                  makeRow xs = "<tr>" ++ concat (map makeItem xs) ++ "</tr>"
+                  wRow       = makeRow $ foldr (:) [] ws
+                  pRow       = makeRow $ map show ps
+                  arrows     = makeRow $ replicate len "↑"
+              in    "<html><table>"
+                 ++ wRow
+                 ++ arrows
+                 ++ pRow
+                 ++ "</table></html>"
+
 main :: IO ()
 main = do
   tagFreqsStr        ← readFile "model/tagFreqs.hs"
@@ -144,4 +157,15 @@ main = do
                             , transMatrix = transFn
                             , outMatrix   = outFn
                             }
-    in pretty sample₁ $ viterbi newHMM sample₁
+    in do
+      putStrLn $ table sample₆ (viterbi newHMM sample₆)
+      putStrLn $ "<hr>"
+      putStrLn $ table sample₅ (viterbi newHMM sample₅)
+      putStrLn $ "<hr>"
+      putStrLn $ table sample₄ (viterbi newHMM sample₄)
+      putStrLn $ "<hr>"
+      putStrLn $ table sample₃ (viterbi newHMM sample₃)
+      putStrLn $ "<hr>"
+      putStrLn $ table sample₂ (viterbi newHMM sample₂)
+      putStrLn $ "<hr>"
+      putStrLn $ table sample₁ (viterbi newHMM sample₁)
