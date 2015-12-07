@@ -5,12 +5,11 @@
 
 module Main where
 
-import Prelude
-import Data.HMM (loadHMM, viterbi, HMM(..))
-import System.IO
+import Prelude hiding (lines)
+import Data.HMM (viterbi, HMM(..))
 import Data.Array
 import Parse (POS(..))
-import Data.Map.Strict (findWithDefault, Map(..))
+import Data.Map.Strict (findWithDefault, Map)
 import Data.List (intercalate)
 import Data.Number.LogFloat
 

@@ -3,13 +3,8 @@
 
 module Main where
 
-import           Data.Array           (Array, listArray)
-import           Data.HMM             ( HMM (..)
-                                      , viterbi
-                                      , saveHMM
-                                      , loadHMM)
+import           Data.Array           (Array)
 import qualified Data.Map             as M
-import           Data.List            (intercalate)
 import           Data.Number.LogFloat
 import           Parse
 import           Prelude              hiding (putStr, words, lines)
@@ -73,19 +68,8 @@ main = do
       tagBigrams       = [(ts !! i, ts !! (i+1)) | i ← [0 .. (length ts)-2]]
       tagBigramFreqs   = freqMap tagBigrams
       -- We will use these to create our HMM.
-      transFn s₁ s₂     = probability (s₁, s₂) tagFreqs tagBigramFreqs
-      outFn s e        = probability (e, s) wordFreqs taggedWordFreqs
       initStatesFreqs  = freqMap  $ map (head . map snd) taggedWordsList
-      initProbFn s     = let count  = M.findWithDefault 0 s initStatesFreqs
-                             count' = fromIntegral count
-                             n      = fromIntegral $ length taggedWordsList
-                         in logFloat $ count' / n
-      possibleTags     = [Noun .. Unknown]
-      !newHMM           = HMM { states      = possibleTags ∷ [POS]
-                             , events      = ws ∷ [String]
-                             , initProbs   = initProbFn
-                             , transMatrix = transFn
-                             , outMatrix   = outFn}
+  createDirectoryIfMissing False "model"
   writeFile "model/tagFreqs.hs"        (show tagFreqs)
   writeFile "model/wordFreqs.hs"       (show wordFreqs)
   writeFile "model/tagBigramFreqs.hs"  (show tagBigramFreqs)
