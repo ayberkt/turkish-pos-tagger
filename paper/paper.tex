@@ -50,7 +50,8 @@ I will implement a part-of-speech tagger for the Turkish language. As
 mentioned in section~\ref{sec:related_work}, I will mostly focus on parts-of-speech
 of words\footnote{I base my definition of a ``word'' on the orthographic space in
   most of the cases. There are certain exceptions to this, such as
-  reduplication which I denote with the POS tag ``Dup''} and will not be accounting for morphology, unlike
+  reduplication which I denote with the POS tag ``Dup''} and will not be
+accounting for morphology, unlike
 the case with most of the serious research on Turkish NLP. There definitely are
 problems with this approach---but fixing these would go beyond the scope of
 this class
@@ -64,27 +65,40 @@ project, comes from the METU-Sabanc{\i} treebank built by
 the treebank and use those to train the HMM
 
 \section{Results}
-
 The POS tagger I've built as proposed can successfully tag words with a
 reasonable accuracy.
 
+\subsection{Performance}
+Parsing the entire corpus and creating a model out of it takes 10.5 seconds on
+average. Tagging a sentence (which we're assuming to have 5 words on average)
+takes $~0.3$ seconds. The implementation of the \texttt{Data.HMM} datatype uses
+\texttt{Data.Array}'s
+\footnote{https://hackage.haskell.org/package/array-0.5.1.0/docs/Data-Array.html}
+which is why it runs reasonably fast.
+
 \subsection{Limitations}
 There is a fundamental limitation to the POS tagger I built: Turkish morphology
-is essential to the overall expressivity of the Turkish language. In English we
-entertain the notion of ``syntactic correctness'', which we define as words of a
-sentence having some sort of correct order. A speaker of English that has
+is essential to the overall completeness of Turkish.
+
+In English we entertain the notion of \emph{syntactic correctness}, which is
+more or less a formalism of correct ordering of words. A speaker of English that has
 synactic competence in the language \citep{bachman1990} may know that a sentence
-is well-formed, relying on his knowledge of syntactic rules. However, for
+is well-formed, relying on his knowledge of syntactic rules. However, for the
 \textit{words}, knowledge of morphological rules is not adequate to conclude
-that a word is valid; they have to rely on their lexical knowledge to verify
-that the morphological form they derived/inflected is a valid one. Consider the
-word ``satisfiableness'' which is not a valid word, derived with valid suffixes.
-The correct form of this concept is ``satisfiability''. In Turkish, the concept
-of word validness is a lot like syntactic correctness; the speaker may rely
-their knowledge of morphological rules to \textit{generate} new words. In fact
-Turkish has \textbf{recursive} morphology \citep{kabak2001} so a word can be
-inflected/derived in into infinitely many different ways. This is why
-computational processing of Turkish can never fully escape its morphology.
+that a word is made up of correctly ordered morphemes; they have to rely on
+their lexical knowledge to verify that the morphological form they
+derived/inflected is a valid one. Consider the word ``satisfiableness'' which
+is not a valid word according to several dictionaries, although being derived
+with valid suffixes. The correct form of this concept is ``satisfiability''.
+
+In Turkish, the concept of word validness is a lot like syntactic correctness;
+the speaker may rely their knowledge of morphological rules to \emph{generate}
+new words. In fact Turkish has \textbf{recursive} morphology \citep{kabak2001}
+so a word can be inflected/derived in into infinitely many different forms. This
+is why computational processing of Turkish can never fully escape its
+morphology.
+
+The hidden markov model I've built for this project \emph{ignores} morphology.
 
 \section{Conclusion}
 
