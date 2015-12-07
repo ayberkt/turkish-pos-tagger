@@ -1,6 +1,5 @@
 hmm-master
 *.hmm
-create-model
 model/
 
 *.aux
