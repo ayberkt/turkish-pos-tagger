@@ -1,0 +1,17 @@
+all:
+	pdflatex paper.tex
+
+bib:
+	latex paper.tex && bibtex paper.aux && latex paper.tex && pdflatex paper.tex
+
+clean:
+	rm -f paper.pdf
+	rm -f paper.aux
+	rm -f paper.log
+	rm -f paper.dvi
+	rm -f paper.log
+	rm -f paper.bbl
+	rm -f paper.out
+	rm -f paper.blg
+	rm -rf auto
+	rm -rf texput.log
