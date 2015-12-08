@@ -1,8 +1,8 @@
 all:
-	pdflatex paper.tex
+	xelatex paper.tex
 
 bib:
-	latex paper.tex && bibtex paper.aux && latex paper.tex && pdflatex paper.tex
+	xelatex paper.tex && bibtex paper.aux && xelatex paper.tex && xelatex paper.tex
 
 clean:
 	rm -f paper.pdf

@@ -2,6 +2,10 @@
 \usepackage{natbib}
 \usepackage{todonotes}
 \usepackage{hyperref}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage[T1]{fontenc}
+\usepackage{mathrsfs}
 
 \newcommand{\hmmURL}{https://hackage.haskell.org/package/hmm-0.2.1.1/docs/Data-HMM.html}
 
@@ -10,6 +14,7 @@
 \date{}
 
 \begin{document}
+%include agda.fmt
 \maketitle
 
 \section{Motivation}
@@ -68,11 +73,69 @@ the treebank and use those to train the HMM
 The POS tagger I've built as proposed can successfully tag words with a
 reasonable accuracy.
 
+\subsection{A Brief Overview on Implementation}
+The project consists of two executables: (1) \texttt{create-model} that reads
+the data from the corpus and parses it into a form from which we can easily
+construct an \texttt{HMM}. Unfortunately, it is highly impractical---if not
+impossible---to directly serialize \texttt{HMM} since it has three fields
+containing functions
+\footnote{http://stackoverflow.com/questions/17785916/can-haskell-functions
+  -be-serialized for further information.}. We consider this a fault in the
+design of the \texttt{Data.HMM} package and urge further development. Although
+this has almost no effect on performance, it obfuscates the code.
+
+Since processing the corpus is a resource-demanding operation,
+\texttt{create-model} is intended be run only once after which \texttt{run-tag}
+can be used to make use of that data.
+
+\paragraph{\texttt{create-model}}
+The executable \texttt{create-model} is implemented in two files:
+\texttt{Parse.hs} and \texttt{Main.hs}. \texttt{Parse.hs} handles the parsing of
+the corpus.
+
+The function \texttt{freqMap} takes as input a list of orderable elements
+(denoted with \texttt{Ord a}) and creates a \texttt{Map} containing, as value,
+the frequency of each element.
+
+\begin{lstlisting}[
+  language=Haskell,
+  mathescape,
+  columns=fullflexible,
+  basicstyle=\small\ttfamily
+]
+freqMap :: Ord a $\Rightarrow$ [a] $\rightarrow$ M.Map a Int
+freqMap unigrams = populate M.empty unigrams
+  where populate :: Ord a M.Map a $Z$ $\rightarrow$ [a] $\rightarrow$ M.Map a Int
+        populate m [] = m
+        populate m (x:xs) = let freq = (M.findWithDefault 0 x m) :: ℤ
+                            in populate (M.insert x (freq + 1) m) xs
+\end{lstlisting}
+
+This is the basis of our \emph{supervised} learning.
+
+\paragraph{\texttt{tag}}
+
+The executable \texttt{run-tag} is where the actual tagging happens. The
+frequencies we have pre-computed in \texttt{create-model} are passed in to the
+probability function which we give below.
+\begin{lstlisting}[
+  language=Haskell,
+  mathescape,
+  columns=fullflexible,
+  basicstyle=\small\ttfamily
+]
+probability :: (Ord a, Ord b) $\Rightarrow$ (a, b) $\rightarrow$ Map a Int$\rightarrow$ Map (a, b) ℤ $\rightarrow \mathscr{L}$
+probability (x, y) c$\_1$ c$\_2$ = if xCount == 0 || yCount == 0
+                           then logFloat $\epsilon$
+                           else (logFloat yCount) / (logFloat xCount)
+  where yCount = fromIntegral (findWithDefault 0 (x, y) c₂) ∷ Double
+        xCount = fromIntegral (findWithDefault 0 x c₁) ∷ Double
+\end{lstlisting}
 \subsection{Performance}
 Parsing the entire corpus and creating a model out of it takes 10.5 seconds on
 average. Tagging a sentence (which we're assuming to have 5 words on average)
 takes $~0.3$ seconds. The implementation of the \texttt{Data.HMM} datatype uses
-\texttt{Data.Array}'s
+\texttt{Data.Array}
 \footnote{https://hackage.haskell.org/package/array-0.5.1.0/docs/Data-Array.html}
 which is why it runs reasonably fast.
 
