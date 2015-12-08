@@ -1,6 +1,7 @@
 hmm-master
 *.hmm
 model/
+out.html
 
 *.aux
 *.bbl
