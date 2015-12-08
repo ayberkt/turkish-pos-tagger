@@ -55,4 +55,4 @@ main = do
   writeFile "model/taggedWordFreqs.hs" (show taggedWordFreqs)
   writeFile "model/initStatesFreqs.hs" (show initStatesFreqs)
   writeFile "model/words.hs" (show ws)
-  putStrLn "Successfully saved model in model."
+  putStrLn "Successfully saved model in dir \"model\"."
