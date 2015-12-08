@@ -29,12 +29,6 @@ freqMap unigrams = populate M.empty unigrams
 --  | Takes in a tuple (x, y) (i.e., a bigram), and takes in two frequency maps
 --    c₁ and c₂, c₁ for counting all the occurrences of x and the other for
 --    counting the number of bigrams.
-probability ∷ (Ord a, Ord b) ⇒ (a, b) → M.Map a ℤ → M.Map (a, b) ℤ → 𝓛
-probability (x, y) c₁ c₂ = if xCount == 0 || yCount == 0
-                           then logFloat ε
-                           else (logFloat yCount) / (logFloat xCount)
-  where yCount = fromIntegral (M.findWithDefault 0 (x, y) c₂) ∷ ℚ
-        xCount = fromIntegral (M.findWithDefault 0 x c₁) ∷ ℚ
 
 main ∷ IO ()
 main = do

@@ -67,7 +67,7 @@ parseTupleList xs = map parseTuple xs
                 info' = extractPOS info
 
 -- | Given number of files `numFiles` takes out all word-tag pairs
--- | from each file indexed from 0 .. `numFiles`, and concatenates
--- | them.
+--   from each file indexed from 0 .. `numFiles`, and concatenates
+--   them.
 getWords :: FilePath -> IOSLA (XIOState s) a (String, String)
 getWords f = readDocument [withValidate no] f >>> words
