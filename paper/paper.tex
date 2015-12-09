@@ -19,19 +19,25 @@
 
 \section{Motivation}
 \label{sec:motivation}
-My main motivation for undertaking this project is to understand the
-principles underlying POS-tagging. Due to time and resource constraints, it is
-not possible for me to build a state-of-the-art POS-tagger for
-Turkish. Nevertheless, I expect my POS-tagger
-to work with a decent accuracy that is adequate to be a starting point for
-further development. Moreover, \citet{Korkut2015} began the development of a
-Turkish NLP library named ``Guguk'', implemented in the programming language Haskell. I intend
-to merge this project to Guguk, hence contributing towards
-the existence of a Turkish NLP-library in Haskell.
 
-Before proceeding, a few remarks on notational conventions: I use
-\texttt{HMM} (with the fixed-width font) to the datatype I'm using from the
-\texttt{Data.HMM} package and HMM (with regular font) to refer to the concept.
+The main motivation for this project comes from the lack of a POS tagger for
+Turkish exclusively implemented in the programming language Haskell. Moreover, I
+believe that implementing a POS tagger from scratch is beneficial in terms of
+gain experience with relevant statistical models through this process.
+
+Due to time and resource constraints, it is not plausible to build a
+state-of-the-art POS tagger for Turkish. Nevertheless, I expect my POS tagger to
+work with decent accuracy that is adequate to be a starting point for further
+development. Moreover, \citet{Korkut2015} began the development of a Turkish NLP
+library named ``Guguk'', implemented in the programming language Haskell. I
+intend to merge this project to Guguk, hence contributing towards the existence
+of a Haskell Turkish NLP library; I intend to continue development of this
+project as a part of Guguk.
+
+Before I proceed, let me give a few remarks on notational conventions I follow
+throughout this text: I use \texttt{HMM} (with the fixed-width font) to the
+datatype I'm using from the \texttt{Data.HMM} package and HMM (with regular
+font) to refer to the concept.
 
 \section{Related Work}
 \label{sec:related_work}
@@ -41,10 +47,10 @@ Before proceeding, a few remarks on notational conventions: I use
 % least one to two paragraphs in length.
 \cite{dincer2008suffix} built a POS tagger for Turkish using HMMs on suffixes.
 This proves an effective approach seeing that (1) Turkish morphology is
-exclusively based on suffixes (not prefixes) (2) morphology is central to the
-Turkish language so it is likely that any given word is formed through the
-agglutination of at least one morpheme. The tagger described has ``\%90.2
-accuracy in the best case''.
+exclusively based on suffixes, in contrast to to prefixes (2) morphology is
+central to the Turkish language so it is likely that any given word is formed
+through the agglutination of at least severals morphemes. The tagger described
+by \citet{dincer2008suffix} has ``\%90.2 accuracy in the best case''.
 
 The widely cited \citet{oflazer1994tagging} outlines the implementation of a
 tool for both morpheme glossing and POS tagging, that has ``98-99 \%'' accuracy.
@@ -65,7 +71,7 @@ words\footnote{I base my definition of a ``word'' on the orthographic space in
   most of the cases. There are certain exceptions to this, such as duplication
   which I denote with the POS tag ``Dup''} and will not be accounting for
 morphology, unlike most of the related work I've mentioned. There are definite
-problems with this approach. Fixing these would go beyond the scope of this
+problems with this approach; fixing these would go beyond the scope of this
 paper therefore I defer the integration of morphology for further development.
 
 For programming the POS tagger I will be using Haskell, a statically-typed and
@@ -76,39 +82,49 @@ built by \citet{oflazer2003building}. I am planning to strip the POS tag for
 each word from the treebank and use those to train the HMM
 
 \section{Results}
-The resulting program I have implemented is based on bigram hidden markov
-models. To summarize it we are making use of three probabilities: (1) $P(t_i |
-t_{i-1})$ the probability of being at a state (i.e., a tag) given the previous
-state. This is computed\footnote{Although I use the word ``compute'', everything
-  is already pre-computed and the referred computation is merely a lookup. This
-  is discussed in \ref{par:tag}} by the function \texttt{transFn}. (2) $P(w_i | t_i)$ the
-probability of seeing a word having a given tag, computed by the function
-\texttt{outFn}. Finally, the probability of a given state being the start state
-of a sentence, computed by the function \texttt{outProbs}.
+
+The resulting program I have implemented is based on bigram hidden markov model.
+To summarize it, I am making use of three probabilities: (1) $P(t_i | t_{i-1})$
+the probability of being at a state (i.e., a tag) given the previous state. This
+is computed\footnote{Although I use the word ``compute'', everything is already
+  pre-computed when a call to this function is made and the referred computation
+  is merely a lookup. This is discussed in \ref{par:tag}} by the function
+\texttt{transFn}. (2) $P(w_i | t_i)$ the probability of seeing a word with a
+given tag, computed by the function \texttt{outFn}. Finally, the probability of
+a given state being the start state of a sentence, computed by the function
+\texttt{outProbs}.
 
 \subsection{A Brief Overview of the Program}
+
 The project consists of two executables: (1) \texttt{create-model} that reads
 the data from the corpus and parses it into a form from which we can easily
 construct an \texttt{HMM}. Unfortunately, it is highly impractical---if not
-impossible---to directly serialize \texttt{HMM} since it has three fields
-containing functions
-\footnote{http://stackoverflow.com/questions/17785916/can-haskell-functions
+impossible---to directly serialize the \texttt{HMM} datatype since it has three
+fields containing functions \footnote{See
+  http://stackoverflow.com/questions/17785916/can-haskell-functions
   -be-serialized for further information.}. We consider this a fault in the
-design of the \texttt{Data.HMM} package and urge further development. Although
-this has almost no effect on performance, it obfuscates the code.
+design of the \texttt{Data.HMM} package and urge further development; this has
+almost no effect on performance, but it obfuscates the code.
 
 Since processing the corpus is a resource-demanding operation,
 \texttt{create-model} is intended be run only once after which \texttt{run-tag}
-can be used to make use of that data.
+can be used to make use of the serialized components of the HMM.
+
+I should note that it is not possible to give a complete account of the
+program's logic in this chapter although we explain the most salient components.
+The source code is in the \texttt{ayberkt-final_project} repository and it is
+well-commented. Should the reader have any concerns regarding implemenetation
+they could find it convenient to consult the source code.
 
 \subsubsection{\texttt{create-model}}
+
 The executable \texttt{create-model} is implemented in two files:
 \texttt{Parse.hs} and \texttt{Main.hs}. \texttt{Parse.hs} handles the parsing of
-the corpus.
+the treebank.
 
-The function \texttt{freqMap} takes as input a list of orderable elements
-(denoted with \texttt{Ord a}) and creates a \texttt{Map} containing, as value,
-the frequency of each element.
+The function \texttt{freqMap} found in \texttt{create/Main.hs} takes as input a
+list of orderable elements (denoted with \texttt{Ord a}) and creates a
+\texttt{Map} containing, as value, the number of ocurrence of each element.
 
 \begin{lstlisting}[
   language=Haskell,
@@ -121,18 +137,19 @@ freqMap elems = populate empty elems
   where populate :: Ord a Map a Int $\rightarrow$ [a] $\rightarrow$ M.Map a Int
          populate m [] = m
          populate m (x:xs) = let freq = (M.findWithDefault 0 x m) :: Int
-                            in populate (M.insert x (freq + 1) m) xs
+                              in populate (M.insert x (freq + 1) m) xs
 \end{lstlisting}
 
 This function is called several times with lists of values we want to
-\emph{count} such as tag bigrams, a given word with a certain tag et cetera.
-Pre-computing the counts is almost mandatory since frequencies (i.e., counts)
-will need to be accessed frequently when computing the probabilities. Once the
-necessary maps are generated, they are written to files in the directory
-\texttt{model}.
+\emph{count} (such as the list of tag bigrams, or the list of all tagged words)
+et cetera. Pre-computing the counts is almost mandatory since frequencies (i.e.,
+counts) will need to be accessed many times by the viterbi algorithm when
+finding the most probable path through the model. Once the necessary maps are
+generated, they are written to files in the directory \texttt{model}.
 
 \subsubsection{\texttt{tag}}
 \label{par:tag}
+
 The executable \texttt{run-tag} is where the actual tagging happens. The
 frequencies we have pre-computed in \texttt{create-model} are passed in to the
 probability function which we give below.
@@ -149,32 +166,31 @@ probability (x, y) c$_1$ c$_2$ = if xCount == 0 || yCount == 0
   where yCount = fromIntegral (findWithDefault 0 (x, y) c₂) ∷ Double
         xCount = fromIntegral (findWithDefault 0 x c₁) ∷ Double
 \end{lstlisting}
-
 This is a straightforward implementation of probability relying on a given count
 map. One thing to note is that it returns $\epsilon$ probability (i.e., the
-smalles value a \texttt{logFloat}) if a given element is not found.
+smallest value a \texttt{LogFloat}\footnote{A float in the log domain.} can have) if a given element is not found.
 
-\texttt{probability} when combined with \texttt{freqMap} forms an
-efficient method for implementing Bayes' law. When we are creating the functions
-required by \texttt{HMM} we are storing the map returned by a call to
-\texttt{freqMap} in the lexical closure of \texttt{probability} by making use
-Haskell's currying so that we can eloquently define the two crucial functions as
-follows:
+\texttt{probability} when combined with \texttt{freqMap} forms an efficient
+method for implementing dependent probability.
+
+When we are creating the functions required by \texttt{HMM} we are storing the
+map returned by a call to \texttt{freqMap} in the lexical closure of
+\texttt{probability} by making use Haskell's currying so that we can eloquently
+define the two crucial functions as follows:
 \begin{lstlisting}[
   language=Haskell,
   mathescape,
   columns=fullflexible,
   basicstyle=\small\ttfamily
 ]
-transFn s$_1$ s$_2$ = probability (s$_1$, s$_2$) tagFreqs tagBigramFreqs
-outFn s e = probability (e, s) wordFreqs taggedWordFreqs
+    transFn s$_1$ s$_2$ = probability (s$_1$, s$_2$) tagFreqs tagBigramFreqs
+    outFn s e = probability (e, s) wordFreqs taggedWordFreqs
 \end{lstlisting}
-The probability functions used to create \texttt{transFn} and \texttt{outFn} hold
-the count maps \texttt{tagBigramFreqs} and \texttt{taggedWordFreqs} in their
-lexical closure, respectively.
+The probability functions used to create \texttt{transFn} and \texttt{outFn}
+hold the count maps \texttt{tagBigramFreqs} and \texttt{taggedWordFreqs} in
+their lexical closure, respectively.
 
 Finally we declare a new \texttt{HMM} as follows:
-
 \newpage
 \begin{lstlisting}[
   language=Haskell,
@@ -190,28 +206,31 @@ Finally we declare a new \texttt{HMM} as follows:
                      }
 \end{lstlisting}
 
-This is a simple record (a record is like C struct in Haskell) containing the
-probability functions we defined.\footnote{For some reason, the author of the
-  \texttt{Data.HMM} library named the fields (i.e., attribute), that are of
-  function types, using names that end with \texttt{-Matrix} although they are
-  \emph{not} matrices. The reader should not be confused by this.}
+This is a simple record\footnote{A record is a datatype declaration in Haskell
+  similar to a struct in C.} containing the probability functions we
+defined.\footnote{For some reason, the author of the \texttt{Data.HMM} library
+  named the fields (i.e., attribute), that are of function types, using names
+  that end with \texttt{-Matrix} although they are \emph{not} matrices. The
+  reader should not be confused by this.}
 
 
 
 \subsection{Performance}
-Parsing the entire corpus and creating a model out of it takes 10.5 seconds on
-average. Tagging a sentence (which we are assuming to have 5 words on average)
-takes $~0.3$ seconds. The implementation of the \texttt{Data.HMM} datatype uses
-\texttt{Data.Array}
+Parsing the entire corpus and creating a model out of it takes $10.5$ seconds on
+average.\footnote{On my i5 MacBook} Tagging a sentence grows with $O(n)$
+complexity where $n$ is the number of words in a given sentence. Assuming a
+sentence has 5 words on average, this operation takes around $~0.3$ seconds.
 \footnote{https://hackage.haskell.org/package/array-0.5.1.0/docs/Data-Array.html}
-which is why it runs reasonably fast.
 
 \section{Conclusion}
 
 We have shown that it is possible---though not ideal---to build a POS tagger for
-Turkish that is based entirely on a bigram hidden markov model. Let us first
-look at the accuracy of this model and propose possible fixes that do not
-fundamentally change the structure of the model.
+Turkish---a canonical agglutinative language---that is based entirely on a
+bigram HMM. In this section I analyze the accuracy of the tagger and discuss
+simple improvements I can make, as well as its fundamental limitations fixing
+which would require a significant rewrite of the tagger. Let us first look at
+the accuracy of this model and propose possible fixes that do not fundamentally
+change the structure of the model.
 
 \subsection{Accuracy}
 \label{subsec:accuracy}
@@ -242,12 +261,12 @@ known problems:
 \end{description}
 
 \subsection{Limitations}
-There is a fundamental limitation to the POS tagger I built: Turkish morphology
-is essential to the overall completeness of Turkish.
+There exists a fundamental limitation to the described tagger: Turkish
+morphology is essential to the overall completeness of Turkish.
 
 In English we entertain the notion of \emph{syntactic correctness}, which is
-more or less a formalism of correct ordering of words. A speaker of English that
-has synactic competence in the language \citep{bachman1990} may know that a
+more or less a formalism of the correct ordering of words. A speaker of English
+that has synactic competence in the language \citep{bachman1990} may know that a
 sentence is well-formed, relying on his knowledge of syntactic rules. However,
 for the \textit{words}, knowledge of morphological rules is not adequate to
 conclude that a word is made up of correctly ordered morphemes; they have to
