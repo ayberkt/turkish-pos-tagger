@@ -15,7 +15,7 @@
 
 \begin{document}
 %include agda.fmt
-\maketitle
+
 
 \section{Motivation}
 \label{sec:motivation}
@@ -23,28 +23,27 @@
 The main motivation for this project comes from the lack of a POS tagger for
 Turkish exclusively implemented in the programming language Haskell. Moreover, I
 believe that implementing a POS tagger from scratch is beneficial in terms of
-gain experience with relevant statistical models through this process.
+gaining experience with relevant statistical models.
 
 Due to time and resource constraints, it is not plausible to build a
-state-of-the-art POS tagger for Turkish. Nevertheless, I expect my POS tagger to
-work with decent accuracy that is adequate to be a starting point for further
+state-of-the-art POS tagger for Turkish. Nevertheless, I expect the POS tagger
+to work with decent accuracy that is adequate to be a starting point for further
 development. Moreover, \citet{Korkut2015} began the development of a Turkish NLP
-library named ``Guguk'', implemented in the programming language Haskell. I
-intend to merge this project to Guguk, hence contributing towards the existence
-of a Haskell Turkish NLP library; I intend to continue development of this
-project as a part of Guguk.
+library named ``Guguk'', implemented in Haskell. I intend to merge this project
+to Guguk, hence contributing towards the existence of a Haskell Turkish NLP
+library; I also plan to continue working on this project as a part of Guguk.
 
-Before I proceed, let me give a few remarks on notational conventions I follow
-throughout this text: I use \texttt{HMM} (with the fixed-width font) to the
-datatype I'm using from the \texttt{Data.HMM} package and HMM (with regular
-font) to refer to the concept.
+Before I proceed, let me make a few remarks on the notational conventions I
+follow throughout this text: I use \texttt{HMM} (with the fixed-width font) to
+refer to the datatype I'm using from the \texttt{Data.HMM} package and HMM (with
+regular font) to refer to the concept.
 
 \section{Related Work}
 \label{sec:related_work}
 
-% Briefly survey the most salient prior work that relates to the problem you wish
-% to solve. This section should cite relevant sources. This section should be at
-% least one to two paragraphs in length.
+% Briefly survey the most salient prior work that relates to the problem you
+% wish to solve. This section should cite relevant sources. This section should
+% be at least one to two paragraphs in length.
 \cite{dincer2008suffix} built a POS tagger for Turkish using HMMs on suffixes.
 This proves an effective approach seeing that (1) Turkish morphology is
 exclusively based on suffixes, in contrast to to prefixes (2) morphology is
@@ -100,21 +99,22 @@ The project consists of two executables: (1) \texttt{create-model} that reads
 the data from the corpus and parses it into a form from which one can easily
 construct an \texttt{HMM}. Unfortunately, it is highly impractical---if not
 impossible---to directly serialize the \texttt{HMM} datatype since it has three
-fields containing functions \footnote{See
+fields containing functions.\footnote{See
   http://stackoverflow.com/questions/17785916/can-haskell-functions
-  -be-serialized for further information.}. I consider this a fault in the
+  -be-serialized for further information.} I consider this a fault in the
 design of the \texttt{Data.HMM} package and urge further development; this has
 almost no effect on performance, but it obfuscates the code.
 
 Since processing the corpus is a resource-demanding operation,
-\texttt{create-model} is intended be run only once after which \texttt{run-tag}
-can be used to make use of the serialized components of the HMM.
+\texttt{create-model} is intended to be run only once after which
+\texttt{run-tag} can be used to make use of the serialized components of the
+HMM.
 
 I should note that it is not possible to give a complete account of the
 program's logic in this chapter although I explain the most salient components.
-The source code is in the \texttt{ayberkt-final\_project} repository and it is
-well-commented. Should the reader have any concerns regarding implemenetation
-they could find it convenient to consult the source code.
+The source code is in the \texttt{ayberkt-final\_project} repository and is
+well-commented. Should the reader have any concerns regarding the specifics of
+the implementation they could find it convenient to consult the source code.
 
 \subsubsection{\texttt{create-model}}
 
@@ -124,7 +124,7 @@ the treebank.
 
 The function \texttt{freqMap} found in \texttt{create/Main.hs} takes as input a
 list of orderable elements (denoted with \texttt{Ord a}) and creates a
-\texttt{Map} containing, as value, the number of ocurrence of each element.
+\texttt{Map} containing, as value, the number of occurrences of each element.
 
 \begin{lstlisting}[
   language=Haskell,
@@ -132,15 +132,15 @@ list of orderable elements (denoted with \texttt{Ord a}) and creates a
   columns=fullflexible,
   basicstyle=\small\ttfamily
 ]
-freqMap :: Ord a $\Rightarrow$ [a] $\rightarrow$ M.Map a Int
+freqMap :: Ord a $\Rightarrow$ [a] $\rightarrow$ Map a Int
 freqMap elems = populate empty elems
-  where populate :: Ord a Map a Int $\rightarrow$ [a] $\rightarrow$ M.Map a Int
+  where populate :: Ord a Map a Int $\rightarrow$ [a] $\rightarrow$ Map a Int
          populate m [] = m
-         populate m (x:xs) = let freq = (M.findWithDefault 0 x m) :: Int
-                              in populate (M.insert x (freq + 1) m) xs
+         populate m (x:xs) = let freq = (findWithDefault 0 x m) :: Int
+                              in populate (insert x (freq + 1) m) xs
 \end{lstlisting}
 
-This function is called several times with lists of values designate to be
+This function is called several times with lists of values designated to be
 \emph{counted} (such as the list of tag bigrams, or the list of all tagged words)
 et cetera. Pre-computing the counts is almost mandatory since frequencies (i.e.,
 counts) will need to be accessed many times by the viterbi algorithm when
@@ -171,7 +171,7 @@ map. One thing to note is that it returns $\epsilon$ probability (i.e., the
 smallest value a \texttt{LogFloat}\footnote{A float in the log domain.} can have) if a given element is not found.
 
 \texttt{probability} when combined with \texttt{freqMap} forms an efficient
-method for implementing dependent probability.
+method for computing dependent probability.
 
 When I am creating the functions required by \texttt{HMM} I am storing the
 map returned by a call to \texttt{freqMap} in the lexical closure of
