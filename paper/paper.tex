@@ -97,12 +97,12 @@ a given state being the start state of a sentence, computed by the function
 \subsection{A Brief Overview of the Program}
 
 The project consists of two executables: (1) \texttt{create-model} that reads
-the data from the corpus and parses it into a form from which we can easily
+the data from the corpus and parses it into a form from which one can easily
 construct an \texttt{HMM}. Unfortunately, it is highly impractical---if not
 impossible---to directly serialize the \texttt{HMM} datatype since it has three
 fields containing functions \footnote{See
   http://stackoverflow.com/questions/17785916/can-haskell-functions
-  -be-serialized for further information.}. We consider this a fault in the
+  -be-serialized for further information.}. I consider this a fault in the
 design of the \texttt{Data.HMM} package and urge further development; this has
 almost no effect on performance, but it obfuscates the code.
 
@@ -111,8 +111,8 @@ Since processing the corpus is a resource-demanding operation,
 can be used to make use of the serialized components of the HMM.
 
 I should note that it is not possible to give a complete account of the
-program's logic in this chapter although we explain the most salient components.
-The source code is in the \texttt{ayberkt-final_project} repository and it is
+program's logic in this chapter although I explain the most salient components.
+The source code is in the \texttt{ayberkt-final\_project} repository and it is
 well-commented. Should the reader have any concerns regarding implemenetation
 they could find it convenient to consult the source code.
 
@@ -140,8 +140,8 @@ freqMap elems = populate empty elems
                               in populate (M.insert x (freq + 1) m) xs
 \end{lstlisting}
 
-This function is called several times with lists of values we want to
-\emph{count} (such as the list of tag bigrams, or the list of all tagged words)
+This function is called several times with lists of values designate to be
+\emph{counted} (such as the list of tag bigrams, or the list of all tagged words)
 et cetera. Pre-computing the counts is almost mandatory since frequencies (i.e.,
 counts) will need to be accessed many times by the viterbi algorithm when
 finding the most probable path through the model. Once the necessary maps are
@@ -151,8 +151,8 @@ generated, they are written to files in the directory \texttt{model}.
 \label{par:tag}
 
 The executable \texttt{run-tag} is where the actual tagging happens. The
-frequencies we have pre-computed in \texttt{create-model} are passed in to the
-probability function which we give below.
+pre-computed frequencies  in \texttt{create-model} are passed in to the
+probability function which I give below.
 \begin{lstlisting}[
   language=Haskell,
   mathescape,
@@ -173,10 +173,10 @@ smallest value a \texttt{LogFloat}\footnote{A float in the log domain.} can have
 \texttt{probability} when combined with \texttt{freqMap} forms an efficient
 method for implementing dependent probability.
 
-When we are creating the functions required by \texttt{HMM} we are storing the
+When I am creating the functions required by \texttt{HMM} I am storing the
 map returned by a call to \texttt{freqMap} in the lexical closure of
-\texttt{probability} by making use Haskell's currying so that we can eloquently
-define the two crucial functions as follows:
+\texttt{probability} by making use Haskell's currying so that the functions can
+be eloquently defined as follows:
 \begin{lstlisting}[
   language=Haskell,
   mathescape,
@@ -190,8 +190,7 @@ The probability functions used to create \texttt{transFn} and \texttt{outFn}
 hold the count maps \texttt{tagBigramFreqs} and \texttt{taggedWordFreqs} in
 their lexical closure, respectively.
 
-Finally we declare a new \texttt{HMM} as follows:
-\newpage
+Finally a new \texttt{HMM} is declared as follows:
 \begin{lstlisting}[
   language=Haskell,
   mathescape,
@@ -207,7 +206,7 @@ Finally we declare a new \texttt{HMM} as follows:
 \end{lstlisting}
 
 This is a simple record\footnote{A record is a datatype declaration in Haskell
-  similar to a struct in C.} containing the probability functions we
+  similar to a struct in C.} containing the probability functions I have
 defined.\footnote{For some reason, the author of the \texttt{Data.HMM} library
   named the fields (i.e., attribute), that are of function types, using names
   that end with \texttt{-Matrix} although they are \emph{not} matrices. The
@@ -224,7 +223,7 @@ sentence has 5 words on average, this operation takes around $~0.3$ seconds.
 
 \section{Conclusion}
 
-We have shown that it is possible---though not ideal---to build a POS tagger for
+I have shown that it is possible---though not ideal---to build a POS tagger for
 Turkish---a canonical agglutinative language---that is based entirely on a
 bigram HMM. In this section I analyze the accuracy of the tagger and discuss
 simple improvements I can make, as well as its fundamental limitations fixing
@@ -235,7 +234,7 @@ change the structure of the model.
 \subsection{Accuracy}
 \label{subsec:accuracy}
 
-We have tested the POS tagger with 6075 words from a small portion of the corpus
+I have tested the POS tagger with 6075 words from a small portion of the corpus
 that I reserved for testing (i.e., did not use for tranining the HMM). The POS
 tagger tagged 4514 of these words correctly (74.3 \%). Here is a brief list of
 known problems:
@@ -246,17 +245,17 @@ known problems:
   Syntactically speaking, a duplication behaves like a word itself. In the
   treebank, duplications are denoted with two halves joint the with an
   underscore. Since there is not an easy way to detect whether two sequential
-  words are reduplications or not, we are giving duplications in an incorrect
-  format to the HMM.  We predict that (based on informal tests with the model)
+  words are reduplications or not, I am giving duplications in an incorrect
+  format to the HMM.  I predict that (based on informal tests with the model)
   that correction of this problem would significantly increase the accuracy.
 
   \item[Abundance of independent clauses:] It is common in the Turkish language
   to have multiple independent clauses in a given sentence. It is possible that
   this decreases the accuracy of the HMM: instead of a tag $t$ being followed by
-  a tag $t'$, we get a lot of $t, <clause>, t'$ which obscures the word order we
-  are interested in. Since we may always assign the \textsc{Punc} tag to a comma
-  with full certainty, we may simply ignore commas as far as probability is
-  concerned and tag them with \textsc{Punc}.
+  a tag $t'$, there are a lot of $t, <clause>, t'$ which obscures the word order
+  we are interested in. Since it is possible to always assign the \textsc{Punc}
+  tag to a comma with full certainty, I may simply ignore commas as far as
+  probability is concerned and tag them with \textsc{Punc}.
 
 \end{description}
 
@@ -264,9 +263,9 @@ known problems:
 There exists a fundamental limitation to the described tagger: Turkish
 morphology is essential to the overall completeness of Turkish.
 
-In English we entertain the notion of \emph{syntactic correctness}, which is
-more or less a formalism of the correct ordering of words. A speaker of English
-that has synactic competence in the language \citep{bachman1990} may know that a
+In English, there exists a notion of \emph{syntactic correctness}, which is more
+or less a formalism of the correct ordering of words. A speaker of English that
+has synactic competence in the language \citep{bachman1990} may know that a
 sentence is well-formed, relying on his knowledge of syntactic rules. However,
 for the \textit{words}, knowledge of morphological rules is not adequate to
 conclude that a word is made up of correctly ordered morphemes; they have to
@@ -280,17 +279,25 @@ the speaker may rely their knowledge of morphological rules to \emph{generate}
 new words. In fact Turkish has \textbf{recursive} morphology \citep{kabak2001}
 so a word can be inflected/derived in into infinitely many different forms. This
 is why computational processing of Turkish can never fully escape its
-morphology.
+morphology. In the case of the described tagger, the \texttt{outProbFn} function
+becomes increasingly unreliable as the morphological complexity of a word
+increases; for words with more than six-seven suffixes, it is unlikely that the
+word has been seen before.
 
 \subsection{Further research}
 
 A salient possibility for further research is the incorporation of word endings
 into the model using regular expressions. It is trivial to express Turkish
 suffixes, that change their form as not to upset the major vowel harmony in a
-given word. We may say with probably more than $90\%$ probability that a given
-word has a certain POS looking whether its ending satisfies regular expressions.
+given word. It almost \emph{certain} that a given word has a certain POS looking
+whether its ending satisfies regular expressions.
 
-\bibliographystyle{apalike}
+As a more paradigmatically challenging remark, I suggest the possibility of
+tackling Turkish from a Distributed Morphology \citep{halle1993distributed}
+approach. With a theory that views syntax and morphology as instances of the
+same generative engine, it might be possible to expose to true nature of
+agglutinative languages hence dramatically increasing the accuracy and reducing
+the complexity such a program. \bibliographystyle{apalike}
 \bibliography{your_bibliography}
 
 \end{document}
