@@ -2,6 +2,7 @@ hmm-master
 *.hmm
 model/
 out.html
+tb_uni
 
 *.aux
 *.bbl
