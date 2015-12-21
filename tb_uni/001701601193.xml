@@ -1,8 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"çocuk+Noun+A3pl+Pnon+Nom")]' REL="[3,1,(SUBJECT)]"> Çocuklar </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"mızıklan+Verb+Pos")(2,"Noun+Inf+A3sg+Pnon+Dat")]' REL="[3,1,(OBJECT)]"> mızıklanmaya </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,"başla+Verb+Pos+Narr+A3pl+Past")]' REL="[4,1,(SENTENCE)]"> başlamışlardı </W>
-<W IX="4" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>

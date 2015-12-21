@@ -1,7 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"Kıbrıslı+Noun+Prop+A3sg+Pnon+Nom")]' REL="[2,1,(SUBJECT)]"> Kıbrıslı </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"ayağa_kalk+Verb+Pos+Past+A3sg")]' REL="[3,1,(SENTENCE)]" ORG_IG1='[(1,"ayak+Noun+A3sg+Pnon+Dat")]' ORG_IG2='[(1,"kalk+Verb+Pos+Past+A3sg")]'> ayağa_kalktı </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>

@@ -1,9 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"yaş+Noun+A3sg+Pnon+Nom")(2,"Adj+With")(3,"Noun+Ness+A3sg+Pnon+Nom")]' REL="[2,1,(SUBJECT)]"> Yaşlılık </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"işte+Adv")]' REL="[3,1,(SENTENCE)]"> işte </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,",+Punc")]' REL="[4,1,(COORDINATION)]"> , </W>
-<W IX="4" LEM="" MORPH=" " IG='[(1,"çarpıntı+Noun+A3pl+Pnon+Nom")]' REL="[5,1,(SENTENCE)]"> çarpıntılar </W>
-<W IX="5" LEM="" MORPH=" " IG='[(1,"...+Punc")]' REL="[,( )]"> ... </W>
-</S>
-</Set>

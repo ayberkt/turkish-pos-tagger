@@ -1,7 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"kadın+Noun+A3sg+Pnon+Nom")]' REL="[2,1,(SUBJECT)]"> Kadın </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"telaş+Noun+A3sg+Pnon+Nom")(2,"Verb+Acquire+Pos+Narr+Past+A3sg")]' REL="[3,1,(SENTENCE)]"> telaşlanmıştı </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>

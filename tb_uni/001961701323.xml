@@ -1,7 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"soğuk+Adj")(2,"Adv+Ly")]' REL="[2,1,(MODIFIER)]"> Soğukça </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"yanıtla+Verb+Pos+Past+A1sg")]' REL="[3,1,(SENTENCE)]"> yanıtladım </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>

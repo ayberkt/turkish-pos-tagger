@@ -1,7 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"hadi+Interj")]' REL="[2,1,(VOCATIVE)]"> Hadi </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,"koş+Verb+Pos+Opt+A1pl")]' REL="[3,1,(SENTENCE)]"> koşalım </W>
-<W IX="3" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>

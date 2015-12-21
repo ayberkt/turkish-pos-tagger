@@ -1,6 +1,0 @@
-<Set sentences="1">
-<S No="1">
-<W IX="1" LEM="" MORPH=" " IG='[(1,"sağolu+Noun+A3sg+P2sg+Nom")]' REL="[2,1,(SENTENCE)]"> Sağolun </W>
-<W IX="2" LEM="" MORPH=" " IG='[(1,".+Punc")]' REL="[,( )]"> . </W>
-</S>
-</Set>
