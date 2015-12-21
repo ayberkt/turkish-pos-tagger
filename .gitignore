@@ -3,6 +3,8 @@ hmm-master
 model/
 out.html
 tb_uni
+proposal/
+paper/
 
 *.aux
 *.bbl
